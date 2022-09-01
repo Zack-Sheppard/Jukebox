@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Zack-Sheppard/Jukebox/issues"
   },
-  "homepage": "https://github.com/Zack-Sheppard/Jukebox#readme"
+  "homepage": "https://github.com/Zack-Sheppard/Jukebox#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
