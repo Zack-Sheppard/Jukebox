@@ -1,7 +1,12 @@
+
 ### git ignore ###
 
-# Notes
+# notes
 notes/
 
-# Node Packages
+# node.js packages
 node_modules/
+
+# config
+config
+.env

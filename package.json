@@ -4,8 +4,10 @@
   "description": "web app for queueing songs as a group",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server/server.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Zack-Sheppard/Jukebox.git"
@@ -21,6 +23,7 @@
   },
   "homepage": "https://github.com/Zack-Sheppard/Jukebox#readme",
   "dependencies": {
+    "dotenv": "^16.0.2",
     "express": "^4.18.1"
   }
 }
