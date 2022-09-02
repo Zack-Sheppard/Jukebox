@@ -2,10 +2,11 @@
   "name": "jukebox",
   "version": "0.0.1",
   "description": "web app for queueing songs as a group",
-  "main": "./server/server.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./server/src/server.js"
+    "build": "webpack",
+    "start": "node ./server/src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
   "repository": {
@@ -22,9 +23,24 @@
     "url": "https://github.com/Zack-Sheppard/Jukebox/issues"
   },
   "homepage": "https://github.com/Zack-Sheppard/Jukebox#readme",
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "Firefox ESR",
+    "not dead"
+  ],
   "dependencies": {
+    "babel-loader": "^8.2.5",
     "dotenv": "^16.0.2",
     "ejs": "^3.1.8",
     "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-react": "^7.18.6",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }
