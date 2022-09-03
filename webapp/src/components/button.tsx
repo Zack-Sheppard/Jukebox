@@ -3,8 +3,10 @@
 
 "use strict";
 
-export default class Button extends React.Component {
-  constructor(props) {
+import * as React from "react";
+
+export default class Button extends React.Component<{type: any, onClick: any, enabled: boolean, text: string}, {clicked: boolean}> {
+  constructor(props: any) {
     super(props);
     this.state = {
       clicked: false

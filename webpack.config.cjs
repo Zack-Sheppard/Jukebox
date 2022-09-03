@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    "home": "./webapp/src/home.jsx"
+    "home": "./webapp/src/home.tsx"
   },
   mode: "development",
   output: {
@@ -11,10 +11,12 @@ module.exports = {
     path: path.resolve(__dirname + "/webapp/public", "dist"),
   },
   resolve: {
-    extensions: [".jsx", ".js"]
+    extensions: ['.tsx', '.ts', '.js'],
   },
   module: {
-    rules: [{ test: /\.jsx?$/, loader: "babel-loader"}]
-    // add typescript loader here
+    rules: [
+      { test: /\.jsx?$/, loader: "babel-loader"},
+      { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/,}
+    ]
   }
 };

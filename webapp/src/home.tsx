@@ -1,10 +1,14 @@
 
 "use strict";
 
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+import {} from "react/next";
+
 import Button from "./components/button"
 
-class Home extends React.Component {
-  constructor(props) {
+class Home extends React.Component<{}, {clicked: boolean}> {
+  constructor(props: any) {
     super(props);
     this.state = { clicked: false };
     this.handleClick = this.handleClick.bind(this);
@@ -27,8 +31,7 @@ class Home extends React.Component {
           onClick={this.handleClick}
           text="Click me!"
           type="button"
-        >
-        </Button>
+        />
       </div>
     );
   }

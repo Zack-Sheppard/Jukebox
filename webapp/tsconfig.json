@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "./public/dist/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "types": ["react/next", "react-dom/next"]
+  }
+}
