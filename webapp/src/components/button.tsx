@@ -5,7 +5,14 @@
 
 import * as React from "react";
 
-export default class Button extends React.Component<{type: any, onClick: any, enabled: boolean, text: string}, {clicked: boolean}> {
+interface ButtonProps {
+  type: any,
+  onClick: any,
+  enabled: boolean,
+  text: string
+}
+
+export default class Button extends React.Component<ButtonProps, {clicked: boolean}> {
   constructor(props: any) {
     super(props);
     this.state = {

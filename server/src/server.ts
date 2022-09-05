@@ -4,7 +4,7 @@ const app: Express = express();
 
 import path from "path";
 
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 const host = process.env.host;
 const port = process.env.port;
