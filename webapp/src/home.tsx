@@ -22,7 +22,7 @@ class Home extends React.Component<{}, {clicked: boolean}> {
 
   render() {
     if (this.state.clicked) {
-      return "Hello world!";
+      return "Goodbye Babel!";
     }
     return (
       <div>

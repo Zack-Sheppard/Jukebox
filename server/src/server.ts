@@ -6,8 +6,8 @@ import path from "path";
 
 import dotenv from "dotenv";
 dotenv.config();
-const host = process.env.host;
-const port = process.env.port;
+const host: string | undefined = process.env.host;
+const port: string | undefined = process.env.port;
 
 app.use(express.static(path.join(__dirname, "../../webapp/public")));
 
