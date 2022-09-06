@@ -14,8 +14,9 @@ app.use(express_1.default.static(path_1.default.join(__dirname, "../../webapp/pu
 app.set("views", path_1.default.join(__dirname, "../../webapp/views"));
 app.set("view engine", "ejs");
 app.get("/", (req, res) => {
+    console.log("got a request for the homepage");
     res.render("home");
 });
-app.listen(port, () => {
-    console.log(`Jukebox server listening at http://${host}:${port}`);
+app.listen(80, () => {
+    console.log(`Jukebox server listening at ${host}:${port}`);
 });
