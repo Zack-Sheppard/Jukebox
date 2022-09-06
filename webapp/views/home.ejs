@@ -3,13 +3,16 @@
 <html>
 <head>
   <title>Jukebox</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../styles/home.css">
 </head>
 <body>
 
-<h1>Jukebox</h1>
+<%- include("./header"); -%>
 
 <div id="root"></div>
+
+<%- include("./footer"); -%>
 
 <!-- Load React. -->
 <!-- Note: when deploying, replace "development.js" with "production.min.js". -->

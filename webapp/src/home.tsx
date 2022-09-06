@@ -22,18 +22,24 @@ class Home extends React.Component<{}, {clicked: boolean}> {
 
   render() {
     if (this.state.clicked) {
-      return "Goodbye Babel!";
+      return (
+        <div id="home">
+          <p id="soon">coming soon™ ...</p>
+        </div>
+      );
     }
-    return (
-      <div>
-        <Button
-          enabled={true}
-          onClick={this.handleClick}
-          text="Click me!"
-          type="button"
-        />
-      </div>
-    );
+    else {
+      return (
+        <div id="home">
+          <Button
+            enabled={true}
+            onClick={this.handleClick}
+            text="Click me!"
+            type="button"
+          />
+        </div>
+      );
+    }
   }
 }
 
