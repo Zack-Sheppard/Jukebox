@@ -6,8 +6,8 @@ import path from "path";
 
 import dotenv from "dotenv";
 dotenv.config();
-const host: string | undefined = process.env.host;
-const port: string | undefined = process.env.port;
+const host: string | undefined = "test-mock-url";
+const port: string | undefined = "8080?";
 
 app.use(express.static(path.join(__dirname, "../../webapp/public")));
 
