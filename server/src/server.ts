@@ -19,6 +19,6 @@ app.get("/", (req: Request, res: Response) => {
     res.render("home");
 });
 
-app.listen(80, () => {
+app.listen(port, () => {
     console.log(`Jukebox server listening at ${host}:${port}`);
 });
