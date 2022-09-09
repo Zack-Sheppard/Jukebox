@@ -36,8 +36,14 @@ const port = process.env.PORT;
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../webapp/public")));
 app.set("views", path_1.default.join(__dirname, "../../webapp/views"));
 app.set("view engine", "ejs");
+// logs path + IP address for every request
+app.use((req, res, next) => {
+    console.log("got a request for/from the following:");
+    console.log(req.url); // log attempted URL here
+    console.log(req.ip); // log IP address here
+    next();
+});
 app.get("/", (req, res) => {
-    console.log("got a request for the homepage");
     res.render("home");
 });
 app.listen(port, () => {
