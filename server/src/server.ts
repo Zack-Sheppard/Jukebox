@@ -4,10 +4,10 @@ const app: Express = express();
 
 import path from "path";
 
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
-const host: string | undefined = "test-mock-url";
-const port: string | undefined = "8080?";
+const host: string | undefined = process.env.HOST;
+const port: string | undefined = process.env.PORT;
 
 app.use(express.static(path.join(__dirname, "../../webapp/public")));
 

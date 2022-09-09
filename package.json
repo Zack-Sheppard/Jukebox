@@ -4,7 +4,6 @@
   "description": "web app for queueing songs as a group",
   "private": true,
   "scripts": {
-    "build": "cd webapp && webpack",
     "start": "node ./server/dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
