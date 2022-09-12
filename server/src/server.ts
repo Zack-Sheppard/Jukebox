@@ -6,8 +6,8 @@ import path from "path";
 
 import * as dotenv from "dotenv";
 dotenv.config();
-const host: string | undefined = process.env.HOST;
-const port: string | undefined = process.env.PORT;
+const host: string | undefined = process.env.HOST || "host";
+const port: string | undefined = process.env.PORT || "80";
 
 app.use(express.static(path.join(__dirname, "../../webapp/public")));
 
@@ -17,13 +17,24 @@ app.set("view engine", "ejs");
 // logs path + IP address for every request
 app.use((req: Request, res: Response, next: NextFunction) => {
     console.log("got a request for/from the following:");
-    console.log(req.url); // log attempted URL here
-    console.log(req.ip);  // log IP address here
+    console.log(req.url);
+    console.log(req.ip);
     next();
 });
 
 app.get("/", (req: Request, res: Response) => {
     res.render("home");
+});
+
+// handle 5XXs
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.log("error!", err.stack);
+    res.status(500).send("Sorry, something went wrong!");
+});
+
+// handle 404s - must be last! before app.listen
+app.use((req: Request, res: Response, next: NextFunction) => {
+    res.status(404).send("Sorry, we can't find that! Double check your URL");
 });
 
 app.listen(port, () => {
