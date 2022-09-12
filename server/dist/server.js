@@ -30,7 +30,7 @@ const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 const path_1 = __importDefault(require("path"));
 const dotenv = __importStar(require("dotenv"));
-dotenv.config();
+dotenv.config({ path: path_1.default.join(__dirname, "../.env") });
 const host = process.env.HOST || "host";
 const port = process.env.PORT || "80";
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../webapp/public")));

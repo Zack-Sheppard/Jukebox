@@ -5,7 +5,7 @@ const app: Express = express();
 import path from "path";
 
 import * as dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, "../.env") });
 const host: string | undefined = process.env.HOST || "host";
 const port: string | undefined = process.env.PORT || "80";
 
