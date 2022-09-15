@@ -28,33 +28,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
+const routes_1 = __importDefault(require("./api/routes"));
 const path_1 = __importDefault(require("path"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: path_1.default.join(__dirname, "../.env") });
-const host = process.env.HOST || "host";
-const port = process.env.PORT || "80";
+const PORT = process.env.PORT || "80";
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../webapp/public")));
+app.use("/", routes_1.default);
 app.set("views", path_1.default.join(__dirname, "../../webapp/views"));
 app.set("view engine", "ejs");
-// logs path + IP address for every request
-app.use((req, res, next) => {
-    console.log("got a request for/from the following:");
-    console.log(req.url);
-    console.log(req.ip);
-    next();
-});
-app.get("/", (req, res) => {
-    res.render("home");
-});
-// handle 5XXs
-app.use((err, req, res, next) => {
-    console.log("error!", err.stack);
-    res.status(500).send("Sorry, something went wrong!");
-});
-// handle 404s - must be last! before app.listen
-app.use((req, res, next) => {
-    res.status(404).send("Sorry, we can't find that! Double check your URL");
-});
-app.listen(port, () => {
-    console.log(`Jukebox server listening at ${host}:${port}`);
+app.listen(PORT, () => {
+    console.log(`Jukebox server listening on port ${PORT}`);
 });
