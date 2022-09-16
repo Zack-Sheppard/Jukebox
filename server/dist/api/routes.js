@@ -19,6 +19,6 @@ router.use((err, req, res, next) => {
 });
 // handle 404s - must be last!
 router.use((req, res, next) => {
-    res.status(404).send("Sorry, we can't find that! Double check your URL");
+    res.render("404");
 });
 exports.default = router;

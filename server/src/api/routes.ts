@@ -23,7 +23,7 @@ router.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 // handle 404s - must be last!
 router.use((req: Request, res: Response, next: NextFunction) => {
-    res.status(404).send("Sorry, we can't find that! Double check your URL");
+    res.render("404");
 });
 
 export default router;
