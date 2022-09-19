@@ -33,6 +33,17 @@ const path_1 = __importDefault(require("path"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: path_1.default.join(__dirname, "../.env") });
 const PORT = process.env.PORT || "80";
+// Spotify variables
+const SPOTIFY_ID = process.env.SPOTIFY_ID || "";
+const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET || "";
+const SPOTIFY_CALLBACK = process.env.SPOTIFY_CALLBACK || "";
+if (SPOTIFY_ID == "" || SPOTIFY_SECRET == "" || SPOTIFY_CALLBACK == "") {
+    console.log("ERROR couldn't find a Spotify variable. Terminating...");
+    process.exit();
+}
+else {
+    console.log("Environment variables all set. Starting server...");
+}
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../webapp/public")));
 app.use("/", routes_1.default);
 app.set("views", path_1.default.join(__dirname, "../../webapp/views"));
