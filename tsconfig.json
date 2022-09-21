@@ -4,6 +4,6 @@
     "esModuleInterop": true,
   },
   "include": [
-    "*test.ts"
+    "./server/test/**/*.test.ts"
   ]
 }
