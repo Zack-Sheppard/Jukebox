@@ -4,9 +4,16 @@
   "description": "web app for queueing songs as a group",
   "private": true,
   "scripts": {
-    "build": "echo 'building...' ;)",
+    "build": "cd webapp && webpack",
     "start": "node ./server/dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "roots": [
+      "./server/test",
+      "./webapp/test"
+    ]
   },
   "repository": {
     "type": "git",
@@ -29,17 +36,22 @@
     "not dead"
   ],
   "dependencies": {
+    "axios": "^0.27.2",
     "dotenv": "^16.0.2",
     "ejs": "^3.1.8",
     "express": "^4.18.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/jest": "^29.0.2",
     "@types/node": "^18.7.15",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
+    "jest": "^29.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "supertest": "^6.2.4",
+    "ts-jest": "^29.0.1",
     "ts-loader": "^9.3.1",
     "typescript": "^4.8.2",
     "webpack": "^5.74.0",

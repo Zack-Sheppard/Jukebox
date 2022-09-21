@@ -1,0 +1,9 @@
+// for tests only
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+  },
+  "include": [
+    "*test.ts"
+  ]
+}
