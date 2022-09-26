@@ -1,9 +1,5 @@
 
-// https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
-// +
-// https://developer.mozilla.org/en-US/docs/Web/API/URL
-
-function isValidHttpUrl(url: string) {
+function isValidHttpUrl(url: string): boolean {
     let valid_url;
 
     try {
