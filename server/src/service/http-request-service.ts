@@ -18,12 +18,12 @@ async function Get(url: string,
         console.log("error: invalid URL for GET");
         return null;
     }
-    const request_config: AxiosRequestConfig = {
+    const config: AxiosRequestConfig = {
         headers: headers,
         params: params
     }
     try {
-        const response: AxiosResponse = await axios.get(url, request_config);
+        const response: AxiosResponse = await axios.get(url, config);
         return response;
     }
     catch(error) {
@@ -49,12 +49,12 @@ async function Post(url: string,
         console.log("error: trying to POST without sending data");
         return null;
     }
-    const request_config: AxiosRequestConfig = {
+    const config: AxiosRequestConfig = {
         headers: headers,
         params: params
     }
     try {
-        const response: AxiosResponse = await axios.post(url, body, request_config);
+        const response: AxiosResponse = await axios.post(url, body, config);
         return response;
     }
     catch(error) {
