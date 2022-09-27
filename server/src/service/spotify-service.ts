@@ -1,6 +1,6 @@
 
-import { Response } from "express";
 import path from "path";
+import { Get, Post } from "./http-request-service"
 
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, "../../.env") });
@@ -8,22 +8,83 @@ const SPOTIFY_ID: string = process.env.SPOTIFY_ID || "";
 const SPOTIFY_SECRET: string = process.env.SPOTIFY_SECRET || "";
 const SPOTIFY_CALLBACK: string = process.env.SPOTIFY_CALLBACK || "";
 
-function RegisterThroughSpotify(res: Response) {
+const ACCOUNTS_SPOTIFY = "https://accounts.spotify.com";
+const API_SPOTIFY = "https://api.spotify.com";
+
+type dataBearingObject = {
+    data: any
+}
+
+function responseContainsData(response: any): response is dataBearingObject {
+    if("data" in response) {
+        console.log("got data from Spotify:");
+        console.log(response.data);
+        return true;
+    }
+    else {
+        console.log("error: missing data from Spotify");
+        return false;
+    }
+}
+
+function GetUserAuthURL(): string {
 
     let scopes: string = "user-read-email" +
                         " user-read-private";
 
-    res.redirect("https://accounts.spotify.com/authorize" +
-               "?response_type=code" +
-               "&client_id=" + SPOTIFY_ID +
-               "&scope=" + encodeURIComponent(scopes) +
-               "&redirect_uri=" + encodeURIComponent(SPOTIFY_CALLBACK) +
-               "&show_dialog=true"
-    );
+    let queryString = "?response_type=code" +
+                      "&client_id=" + SPOTIFY_ID +
+                      "&scope=" + encodeURIComponent(scopes) +
+                      "&redirect_uri=" + encodeURIComponent(SPOTIFY_CALLBACK) +
+                      "&show_dialog=true";
+
+    return ( ACCOUNTS_SPOTIFY + "/authorize" + queryString );
 }
 
-function GetUserInfo() {
-    // TODO
+async function AuthorizeUser(authorization_code: string) {
+    console.log("authorizing Spotify user");
+
+    const body = {
+        grant_type: "authorization_code",
+        redirect_uri: SPOTIFY_CALLBACK,
+        code: authorization_code
+    }
+
+    const id_secret_buffer = Buffer.from(SPOTIFY_ID + ":" + SPOTIFY_SECRET);
+    const base64_encoded_id_secret = id_secret_buffer.toString("base64");
+
+    const headers = {
+        "Authorization": "Basic " + base64_encoded_id_secret,
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+
+    let response = await Post(ACCOUNTS_SPOTIFY + "/api/token", body, headers);
+
+    if(responseContainsData(response)) {
+        return response.data.access_token;
+    }
+    else {
+        return "error";
+    }
 }
 
-export { RegisterThroughSpotify };
+async function GetUserInfo(user_token: string) {
+    console.log("getting Spotify user info");
+
+    const headers = {
+        "Authorization": `Bearer ${user_token}`,
+        "Content-Type": "application/json"
+    }
+
+    // nobody gets me
+    let response = await Get(API_SPOTIFY + "/v1/me", headers);
+
+    if(responseContainsData(response)) {
+        return response.data.display_name;
+    }
+    else {
+        return "error";
+    }
+}
+
+export { GetUserAuthURL, AuthorizeUser, GetUserInfo };
