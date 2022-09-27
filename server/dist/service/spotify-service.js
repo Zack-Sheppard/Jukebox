@@ -70,7 +70,13 @@ function GetUserAuthURL() {
 }
 exports.GetUserAuthURL = GetUserAuthURL;
 async function AuthorizeUser(authorization_code) {
-    validateAuthorizationCode(authorization_code);
+    try {
+        validateAuthorizationCode(authorization_code);
+    }
+    catch (error) {
+        console.log(error);
+        return null;
+    }
     console.log("authorizing Spotify user");
     const body = {
         grant_type: "authorization_code",
@@ -88,7 +94,7 @@ async function AuthorizeUser(authorization_code) {
         return response.data.access_token;
     }
     else {
-        return "error";
+        return null;
     }
 }
 exports.AuthorizeUser = AuthorizeUser;

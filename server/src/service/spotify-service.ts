@@ -55,7 +55,13 @@ function GetUserAuthURL(): string {
 
 async function AuthorizeUser(authorization_code: string) {
 
-    validateAuthorizationCode(authorization_code);
+    try {
+        validateAuthorizationCode(authorization_code);
+    }
+    catch(error) {
+        console.log(error)
+        return null;
+    }
 
     console.log("authorizing Spotify user");
 
@@ -79,7 +85,7 @@ async function AuthorizeUser(authorization_code: string) {
         return response.data.access_token;
     }
     else {
-        return "error";
+        return null;
     }
 }
 
