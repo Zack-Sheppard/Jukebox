@@ -107,10 +107,10 @@ async function GetUserInfo(user_token) {
     // nobody gets me
     let response = await (0, http_request_service_1.Get)(API_SPOTIFY + "/v1/me", headers);
     if (responseContainsData(response)) {
-        return response.data.display_name;
+        return response.data;
     }
     else {
-        return "error";
+        return null;
     }
 }
 exports.GetUserInfo = GetUserInfo;
