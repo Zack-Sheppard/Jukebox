@@ -15,8 +15,10 @@
 </div>
 
 <div style="height:calc(100% - 100px); text-align:center;">
-  <h2 style="margin: auto; padding-top: 50px">Thanks, X!</h2>
-  <h3>You can now close this tab</h3>
+  <% if (name) { %>
+    <h2 style="margin: auto; padding-top: 50px">Thanks <%= name %>!</h2>
+  <% } %>
+  <h3 style="margin: auto; padding-top: 50px">You can now close this tab</h3>
 </div>
 
 <%- include("./footer"); -%>
