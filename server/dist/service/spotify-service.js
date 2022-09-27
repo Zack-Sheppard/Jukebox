@@ -47,6 +47,17 @@ function responseContainsData(response) {
         return false;
     }
 }
+// Spotify authorization code should be 227 chars long,
+// containing A-Z, a-z, 0-9, -, or _
+function validateAuthorizationCode(code) {
+    console.log("validating authorization code");
+    if (/^[0-9A-Za-z_-]{227}$/.test(code)) {
+        console.log("authorization code passed");
+    }
+    else {
+        throw Error("invalid authorization code");
+    }
+}
 function GetUserAuthURL() {
     let scopes = "user-read-email" +
         " user-read-private";
@@ -59,6 +70,7 @@ function GetUserAuthURL() {
 }
 exports.GetUserAuthURL = GetUserAuthURL;
 async function AuthorizeUser(authorization_code) {
+    validateAuthorizationCode(authorization_code);
     console.log("authorizing Spotify user");
     const body = {
         grant_type: "authorization_code",
