@@ -22,8 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const path_1 = __importDefault(require("path"));
+const dotenv = __importStar(require("dotenv"));
+dotenv.config({ path: path_1.default.join(__dirname, "../../.env") });
+const CB_URI = process.env.CB_URI || "/callback";
 const SpotifyService = __importStar(require("../service/spotify-service"));
 const router = (0, express_1.Router)();
 // logs path + IP address for every request
@@ -36,28 +43,56 @@ router.use((req, res, next) => {
 router.get("/", (req, res) => {
     res.render("home");
 });
-// custom URI for pre-alpha invitations
+// custom URI for closed-alpha invitations
 router.get("/register", (req, res) => {
-    console.log("got a request to register!");
-    SpotifyService.RegisterThroughSpotify(res);
+    let url = SpotifyService.GetUserAuthURL();
+    res.redirect(url);
 });
 router.get("/callback", (req, res) => {
-    console.log("Spotify returned:");
-    console.log(req.query);
+    console.log("something went wrong! This is the old callback URI");
+    throw new Error("invalid callback URI");
+});
+router.get(CB_URI, async (req, res, next) => {
     if (req.query.error) {
         if (req.query.error == "access_denied") { // client denied access
             res.redirect("/");
-            return;
         }
         else {
-            throw new Error("Spotify login error"); // actual error happened
+            next(new Error("Spotify: login error")); // other error happened
         }
+        return;
     }
-    res.redirect("/thank-you");
+    if (!req.query.code) {
+        next(new Error("Spotify: null authorization code"));
+        return;
+    }
+    let authorization_code = req.query.code;
+    let token = await SpotifyService.AuthorizeUser(authorization_code);
+    if (!token) {
+        next(new Error("Spotify: null access token"));
+        return;
+    }
+    let user_info = await SpotifyService.GetUserInfo(token);
+    if (!user_info) {
+        next(new Error("Spotify: failed to get user info"));
+        return;
+    }
+    let screen_name = user_info.display_name;
+    if (screen_name == null) {
+        screen_name = "";
+    }
+    screen_name = encodeURIComponent(screen_name);
+    res.redirect("/thank-you?name=" + screen_name);
 });
 router.get("/thank-you", (req, res) => {
-    console.log("got a request for the thank-you page");
-    res.render("thank-you");
+    let screen_name = "";
+    if (req.query.name) {
+        screen_name = req.query.name;
+        if (screen_name.length > 32) { // potentially malicious?
+            throw new Error("bad name param");
+        }
+    }
+    res.render("thank-you", { name: screen_name });
 });
 // handle 5XXs
 router.use((err, req, res, next) => {
