@@ -26,7 +26,7 @@ else {
 app.use(express.static(path.join(__dirname, "../../webapp/public")));
 app.use("/", router);
 
-app.set("views", path.join(__dirname, "../../webapp/views"));
+app.set("views", path.join(__dirname, "../../webapp/views/pages"));
 app.set("view engine", "ejs");
 
 app.listen(PORT, () => {

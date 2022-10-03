@@ -46,7 +46,7 @@ else {
 }
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../webapp/public")));
 app.use("/", routes_1.default);
-app.set("views", path_1.default.join(__dirname, "../../webapp/views"));
+app.set("views", path_1.default.join(__dirname, "../../webapp/views/pages"));
 app.set("view engine", "ejs");
 app.listen(PORT, () => {
     console.log(`Jukebox server listening on port ${PORT}`);
