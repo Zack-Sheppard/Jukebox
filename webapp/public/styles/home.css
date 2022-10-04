@@ -26,6 +26,12 @@ h1, p {
     margin-block-start: 0;
 }
 
+#logo {
+    margin: auto;
+    height: 200px;
+    width: 200px;
+}
+
 #not-mobile {
     display: none;
 }
@@ -62,7 +68,7 @@ h1, p {
 }
 
 #root {
-    height: calc(100% - 100px); /* calc(100% – ( (42 + 8) * 2) ) */
+    height: calc(100% - 300px); /* 100% – ( (42 + 8) * 2) - 200 [logo] */
 }
 
 #soon {
