@@ -6,7 +6,7 @@ html {
 
 body {
     background-color: #7D84B2;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: "Mandali", sans-serif;
     height: 100%;
     margin: 0;
 }
@@ -15,9 +15,10 @@ button {
     background-color: aliceblue;
     border-radius: 4px;
     display: block;
+    font-family: "Mandali", sans-serif;
     font-size: 24px;
     margin: auto;
-    padding: 12px 16px;
+    padding: 4px 12px;
 }
 
 h1, p {
@@ -48,6 +49,10 @@ h1, p {
     }
 }
 
+#header {
+    font-family: "Edu QLD Beginner", cursive;
+}
+
 #header, #footer {
     background-color: #222222;
     height: 42px;
@@ -57,6 +62,7 @@ h1, p {
 
 #footer {
     bottom: 0;
+    font-size: 20px;
     position: relative;
 }
 
