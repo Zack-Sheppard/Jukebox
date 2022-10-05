@@ -66,6 +66,16 @@ h1, p {
     position: relative;
 }
 
+#github-logo, #footer p {
+    display: inline;
+    vertical-align: top;
+}
+
+#github-logo {
+    margin: 5px 5px;
+}
+
+
 #home {
     margin: auto;
     position: relative;
