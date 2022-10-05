@@ -24,7 +24,7 @@ class Home extends React.Component<{}, {clicked: boolean}> {
     if (this.state.clicked) {
       return (
         <div id="home">
-          <p id="soon">coming soon™ ...</p>
+          <p id="soon">coming soon ...</p>
         </div>
       );
     }
