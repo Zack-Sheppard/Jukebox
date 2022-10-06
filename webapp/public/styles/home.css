@@ -39,7 +39,7 @@ h1, p {
 
 @media all and (min-width: 1280px) {
     #not-mobile {
-        color: #222222;
+        color: #333333;
         display: block;
         font-size: 24px;
         position: fixed;
@@ -51,10 +51,19 @@ h1, p {
 
 #header {
     font-family: "Edu QLD Beginner", cursive;
+    text-shadow: 0 0 3px #B2E6F3
+}
+
+#header h1 {
+    color: #B2E6F3;
+}
+
+#header:hover {
+    text-shadow: 0 0 6px #0FF
 }
 
 #header, #footer {
-    background-color: #222222;
+    background-color: #333333;
     height: 42px;
     padding: 4px 8px;
     text-align: center;
@@ -74,7 +83,6 @@ h1, p {
 #github-logo {
     margin: 5px 5px;
 }
-
 
 #home {
     margin: auto;
