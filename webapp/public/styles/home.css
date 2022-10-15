@@ -12,8 +12,10 @@ body {
 }
 
 button {
-    background-color: aliceblue;
-    border-radius: 4px;
+    background-color: #B2E6F3;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 16px 0 #B2E6F3;
     display: block;
     font-family: "Mandali", sans-serif;
     font-size: 24px;
