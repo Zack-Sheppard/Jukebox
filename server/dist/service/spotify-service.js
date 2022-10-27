@@ -47,11 +47,11 @@ function responseContainsData(response) {
         return false;
     }
 }
-// Spotify authorization code should be 227 chars long,
+// Spotify authorization code should be at least 128 chars,
 // containing A-Z, a-z, 0-9, -, or _
 function validateAuthorizationCode(code) {
     console.log("validating authorization code");
-    if (/^[0-9A-Za-z_-]{227}$/.test(code)) {
+    if (/^[0-9A-Za-z_-]{128,}$/.test(code)) {
         console.log("authorization code passed");
     }
     else {
