@@ -1,6 +1,6 @@
 {
   "name": "jukebox",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "web app for queueing songs as a group",
   "private": true,
   "scripts": {
