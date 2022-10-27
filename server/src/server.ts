@@ -28,6 +28,7 @@ app.use("/", router);
 
 app.set("views", path.join(__dirname, "../../webapp/views/pages"));
 app.set("view engine", "ejs");
+app.set("trust proxy", true);
 
 app.listen(PORT, () => {
     console.log(`Jukebox server listening on port ${PORT}`);
