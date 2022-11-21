@@ -32,6 +32,7 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: path_1.default.join(__dirname, "../../.env") });
 const CB_URI = process.env.CB_URI || "/callback";
 const SpotifyService = __importStar(require("../service/spotify-service"));
+const string_utils_1 = require("../utils/string-utils");
 const router = (0, express_1.Router)();
 // logs path + IP address for every request
 router.use((req, res, next) => {
@@ -43,21 +44,31 @@ router.use((req, res, next) => {
 router.get("/", (req, res) => {
     res.render("home");
 });
-// custom URI for closed-alpha invitations
-router.get("/register", (req, res) => {
-    let url = SpotifyService.GetUserAuthURL();
+// custom URI for closed-alpha rooms
+router.get("/ca/enter", (req, res) => {
+    let state = (0, string_utils_1.GenerateRandomAlphanumericString)(16);
+    res.cookie("stateKey", state);
+    let url = SpotifyService.GetUserAuthURL(state);
     res.redirect(url);
 });
 router.get("/callback", (req, res) => {
     console.log("something went wrong! This is the old callback URI");
     throw new Error("invalid callback URI");
 });
+// https://github.com/spotify/web-api-auth-examples/blob/master/authorization_code/app.js
 router.get(CB_URI, async (req, res, next) => {
+    let state = req.query.state;
+    let storedState = req.cookies ? req.cookies["stateKey"] : null;
+    if (state === null || state != storedState) {
+        next(new Error("callback URI: state mismatch"));
+        return;
+    }
     if (req.query.error) {
         if (req.query.error == "access_denied") { // client denied access
             res.redirect("/");
         }
         else {
+            console.log(req.query.error);
             next(new Error("Spotify: login error")); // other error happened
         }
         return;

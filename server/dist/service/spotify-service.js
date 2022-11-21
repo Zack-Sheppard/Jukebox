@@ -58,13 +58,19 @@ function validateAuthorizationCode(code) {
         throw Error("invalid authorization code");
     }
 }
-function GetUserAuthURL() {
+// maybe rename this function, or split its functionality up
+function GetUserAuthURL(clientStateKey) {
+    // developer.spotify.com/documentation/general/guides/authorization/scopes
     let scopes = "user-read-email" +
-        " user-read-private";
+        " user-read-private" +
+        " user-read-currently-playing" +
+        " user-read-playback-state" +
+        " user-modify-playback-state";
     let queryString = "?response_type=code" +
         "&client_id=" + SPOTIFY_ID +
         "&scope=" + encodeURIComponent(scopes) +
         "&redirect_uri=" + encodeURIComponent(SPOTIFY_CALLBACK) +
+        "&state=" + encodeURIComponent(clientStateKey) +
         "&show_dialog=true";
     return (ACCOUNTS_SPOTIFY + "/authorize" + queryString);
 }

@@ -4,6 +4,7 @@ const app: Express = express();
 
 import router from "./api/routes";
 
+import cookieParser from "cookie-parser";
 import path from "path";
 
 import * as dotenv from "dotenv";
@@ -24,6 +25,7 @@ else {
 }
 
 app.use(express.static(path.join(__dirname, "../../webapp/public")));
+app.use(cookieParser());
 app.use("/", router);
 
 app.set("views", path.join(__dirname, "../../webapp/views/pages"));

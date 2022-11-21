@@ -1,6 +1,6 @@
 
 import path from "path";
-import { Get, Post } from "./http-request-service"
+import { Get, Post } from "./http-request-service";
 
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, "../../.env") });
@@ -8,8 +8,8 @@ const SPOTIFY_ID: string = process.env.SPOTIFY_ID || "";
 const SPOTIFY_SECRET: string = process.env.SPOTIFY_SECRET || "";
 const SPOTIFY_CALLBACK: string = process.env.SPOTIFY_CALLBACK || "";
 
-const ACCOUNTS_SPOTIFY = "https://accounts.spotify.com";
-const API_SPOTIFY = "https://api.spotify.com";
+const ACCOUNTS_SPOTIFY: string = "https://accounts.spotify.com";
+const API_SPOTIFY: string = "https://api.spotify.com";
 
 type dataBearingObject = {
     data: any
@@ -39,15 +39,21 @@ function validateAuthorizationCode(code: string) {
     }
 }
 
-function GetUserAuthURL(): string {
+// maybe rename this function, or split its functionality up
+function GetUserAuthURL(clientStateKey: string): string {
 
+    // developer.spotify.com/documentation/general/guides/authorization/scopes
     let scopes: string = "user-read-email" +
-                        " user-read-private";
+                        " user-read-private" +
+                        " user-read-currently-playing" +
+                        " user-read-playback-state" +
+                        " user-modify-playback-state";
 
     let queryString = "?response_type=code" +
                       "&client_id=" + SPOTIFY_ID +
                       "&scope=" + encodeURIComponent(scopes) +
                       "&redirect_uri=" + encodeURIComponent(SPOTIFY_CALLBACK) +
+                      "&state=" + encodeURIComponent(clientStateKey) +
                       "&show_dialog=true";
 
     return ( ACCOUNTS_SPOTIFY + "/authorize" + queryString );

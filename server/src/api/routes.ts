@@ -6,6 +6,7 @@ dotenv.config({ path: path.join(__dirname, "../../.env") });
 const CB_URI: string = process.env.CB_URI || "/callback";
 
 import * as SpotifyService from "../service/spotify-service";
+import { GenerateRandomAlphanumericString } from "../utils/string-utils";
 
 const router = Router();
 
@@ -21,9 +22,11 @@ router.get("/", (req: Request, res: Response) => {
     res.render("home");
 });
 
-// custom URI for closed-alpha invitations
-router.get("/register", (req: Request, res: Response) => {
-    let url = SpotifyService.GetUserAuthURL();
+// custom URI for closed-alpha rooms
+router.get("/ca/enter", (req: Request, res: Response) => {
+    let state: string = GenerateRandomAlphanumericString(16);
+    res.cookie("stateKey", state);
+    let url = SpotifyService.GetUserAuthURL(state);
     res.redirect(url);
 });
 
@@ -32,12 +35,22 @@ router.get("/callback", (req: Request, res: Response) => {
     throw new Error("invalid callback URI");
 });
 
+// https://github.com/spotify/web-api-auth-examples/blob/master/authorization_code/app.js
 router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
+
+    let state = req.query.state;
+    let storedState = req.cookies ? req.cookies["stateKey"] : null;
+    if(state === null || state != storedState) {
+        next(new Error("callback URI: state mismatch"));
+        return;
+    }
+
     if(req.query.error) {
         if(req.query.error == "access_denied") {     // client denied access
             res.redirect("/");
         }
         else {
+            console.log(req.query.error);
             next(new Error("Spotify: login error")); // other error happened
         }
         return;
@@ -52,14 +65,14 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
     let token: string = await SpotifyService.AuthorizeUser(authorization_code);
     if(!token) {
         next(new Error("Spotify: null access token"));
-        return
+        return;
     }
 
     let user_info = await SpotifyService.GetUserInfo(token);
 
     if(!user_info) {
         next(new Error("Spotify: failed to get user info"));
-        return
+        return;
     }
 
     let screen_name: string = user_info.display_name as string;
