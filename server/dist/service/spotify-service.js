@@ -58,7 +58,6 @@ function validateAuthorizationCode(code) {
         throw Error("invalid authorization code");
     }
 }
-// maybe rename this function, or split its functionality up
 function GetUserAuthURL(clientStateKey) {
     // developer.spotify.com/documentation/general/guides/authorization/scopes
     let scopes = "user-read-email" +
@@ -67,7 +66,7 @@ function GetUserAuthURL(clientStateKey) {
         " user-read-playback-state" +
         " user-modify-playback-state";
     let queryString = "?response_type=code" +
-        "&client_id=" + SPOTIFY_ID +
+        "&client_id=" + encodeURIComponent(SPOTIFY_ID) +
         "&scope=" + encodeURIComponent(scopes) +
         "&redirect_uri=" + encodeURIComponent(SPOTIFY_CALLBACK) +
         "&state=" + encodeURIComponent(clientStateKey) +

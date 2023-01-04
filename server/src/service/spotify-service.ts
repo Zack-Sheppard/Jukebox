@@ -39,7 +39,6 @@ function validateAuthorizationCode(code: string) {
     }
 }
 
-// maybe rename this function, or split its functionality up
 function GetUserAuthURL(clientStateKey: string): string {
 
     // developer.spotify.com/documentation/general/guides/authorization/scopes
@@ -50,7 +49,7 @@ function GetUserAuthURL(clientStateKey: string): string {
                         " user-modify-playback-state";
 
     let queryString = "?response_type=code" +
-                      "&client_id=" + SPOTIFY_ID +
+                      "&client_id=" + encodeURIComponent(SPOTIFY_ID) +
                       "&scope=" + encodeURIComponent(scopes) +
                       "&redirect_uri=" + encodeURIComponent(SPOTIFY_CALLBACK) +
                       "&state=" + encodeURIComponent(clientStateKey) +
