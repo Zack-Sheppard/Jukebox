@@ -6,6 +6,7 @@ dotenv.config({ path: path.join(__dirname, "../../.env") });
 const CB_URI: string = process.env.CB_URI || "/callback";
 
 import * as SpotifyService from "../service/spotify-service";
+import * as RoomService from "../service/room-service";
 import { GenerateRandomAlphanumericString } from "../utils/string-utils";
 
 const router = Router();
@@ -22,8 +23,8 @@ router.get("/", (req: Request, res: Response) => {
     res.render("home");
 });
 
-// custom URI for closed-alpha rooms
-router.get("/ca/enter", (req: Request, res: Response) => {
+// custom URI for closed-alpha room creation
+router.get("/ca/create", (req: Request, res: Response) => {
     let state: string = GenerateRandomAlphanumericString(16);
     res.cookie("stateKey", state);
     let url = SpotifyService.GetUserAuthURL(state);
@@ -35,7 +36,6 @@ router.get("/callback", (req: Request, res: Response) => {
     throw new Error("invalid callback URI");
 });
 
-// https://github.com/spotify/web-api-auth-examples/blob/master/authorization_code/app.js
 router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
 
     let state = req.query.state;
@@ -75,24 +75,65 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
         return;
     }
 
+    // user credentials
     let screen_name: string = user_info.display_name as string;
     if(screen_name == null) {
+        console.log("couldn't find display name");
         screen_name = "";
     }
 
-    screen_name = encodeURIComponent(screen_name);
-    res.redirect("/thank-you?name=" + screen_name);
+    let email: string = user_info.email as string;
+    if(email == null) {
+        next(new Error("Spotify: failed to get user email"));
+        return;
+    }
+
+    // find dedicated client room number
+    let room_num: string = RoomService.FindRoomNumber(email);
+
+    if(room_num == "") {
+        next(new Error("Room Service: failed to find user room"));
+        return;
+    }
+
+    // passed all checks, set some cookies
+    res.cookie("SpofityToken", token);
+    res.cookie("ScreenName", screen_name);
+
+    RoomService.SetTokenExp(room_num, token);
+
+    room_num = encodeURIComponent(room_num);
+    res.redirect("/spotify/host?room=" + room_num);
 });
 
-router.get("/thank-you", (req: Request, res: Response) => {
-    let screen_name: string = "";
-    if(req.query.name) {
-        screen_name = req.query.name as string;
-        if(screen_name.length > 32) { // potentially malicious?
-            throw new Error("bad name param");
+router.get("/spotify/host", (req: Request, res: Response) => {
+
+    let spotify_token = req.cookies ? req.cookies["SpofityToken"] : null;
+    let screen_name: string = req.cookies ? req.cookies["ScreenName"] : "";
+    let room_number: string = "";
+
+    if(req.query) { // always true unless query-parser is set to false
+        if(req.query.room) {
+            room_number = req.query.room as string;
+            if(spotify_token) {
+                if(spotify_token == RoomService.GetToken(room_number)) {
+                    console.log("token matches internal room");
+                }
+                else {
+                    throw new Error("Spotify token mismatch");
+                }
+            }
+            else {
+                throw new Error("no Spotify token found");
+            }
         }
     }
-    res.render("thank-you", { name: screen_name });
+
+    if(screen_name.length > 32) { // potentially malicious? Spotify caps at 30
+        throw new Error("bad name param");
+    }
+
+    res.render("host", { room: room_number, name: screen_name });
 });
 
 // handle 5XXs
