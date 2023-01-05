@@ -1,0 +1,12 @@
+
+/* I'm not sure why but everything is short unless I set this */
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #7D84B2;
+    font-family: "Mandali", sans-serif;
+    height: 100%;
+    margin: 0;
+}
