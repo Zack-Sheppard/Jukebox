@@ -1,5 +1,5 @@
 
-import { NextFunction, Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router, urlencoded } from "express";
 import path from "path";
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, "../../.env") });
@@ -106,6 +106,10 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
     res.redirect("/spotify/host?room=" + room_num);
 });
 
+router.get("/secret-birthday-party", (req: Request, res: Response) => {
+    res.render("hbd");
+});
+
 router.get("/spotify/host", (req: Request, res: Response) => {
 
     let spotify_token = req.cookies ? req.cookies["SpofityToken"] : null;
@@ -134,6 +138,43 @@ router.get("/spotify/host", (req: Request, res: Response) => {
     }
 
     res.render("host", { room: room_number, name: screen_name });
+});
+
+router.use("/spotify/search",
+    urlencoded({
+        extended: true
+    })
+);
+
+router.post("/spotify/search", async (req: Request,
+                                      res: Response,
+                                      next: NextFunction) => {
+
+    let song: string = "Never Gonna Give You Up";
+    if(req.body) {
+        console.log(req.body);
+        if(req.body.song) {
+            song = req.body.song as string;
+            if(song.length > 48) {
+                throw new Error("Spotify search: param too long");
+            }
+            console.log("Searching for track ^ on Spotify...");
+        }
+        let itemArray = await SpotifyService.Search(song);
+        res.send({ "result": itemArray });
+    }
+    else {
+        throw new Error("Spotify search: no payload found");
+    }
+});
+
+// add to queue
+router.get("/add", async (req, res) => {
+    console.log("Adding song to room 999");
+    console.log(req.query);
+    let r = await SpotifyService.AddToQueue(req.query.songID as string);
+    res.set("Access-Control-Allow-Origin", "*"); // ?
+    res.send(r);
 });
 
 // handle 5XXs

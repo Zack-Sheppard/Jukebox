@@ -112,6 +112,9 @@ router.get(CB_URI, async (req, res, next) => {
     room_num = encodeURIComponent(room_num);
     res.redirect("/spotify/host?room=" + room_num);
 });
+router.get("/secret-birthday-party", (req, res) => {
+    res.render("hbd");
+});
 router.get("/spotify/host", (req, res) => {
     let spotify_token = req.cookies ? req.cookies["SpofityToken"] : null;
     let screen_name = req.cookies ? req.cookies["ScreenName"] : "";
@@ -136,6 +139,35 @@ router.get("/spotify/host", (req, res) => {
         throw new Error("bad name param");
     }
     res.render("host", { room: room_number, name: screen_name });
+});
+router.use("/spotify/search", (0, express_1.urlencoded)({
+    extended: true
+}));
+router.post("/spotify/search", async (req, res, next) => {
+    let song = "Never Gonna Give You Up";
+    if (req.body) {
+        console.log(req.body);
+        if (req.body.song) {
+            song = req.body.song;
+            if (song.length > 48) {
+                throw new Error("Spotify search: param too long");
+            }
+            console.log("Searching for track ^ on Spotify...");
+        }
+        let itemArray = await SpotifyService.Search(song);
+        res.send({ "result": itemArray });
+    }
+    else {
+        throw new Error("Spotify search: no payload found");
+    }
+});
+// add to queue
+router.get("/add", async (req, res) => {
+    console.log("Adding song to room 999");
+    console.log(req.query);
+    let r = await SpotifyService.AddToQueue(req.query.songID);
+    res.set("Access-Control-Allow-Origin", "*"); // ?
+    res.send(r);
 });
 // handle 5XXs
 router.use((err, req, res, next) => {
