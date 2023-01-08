@@ -1,0 +1,114 @@
+
+h2 {
+    margin-block-end: 0;
+    margin-block-start: 0;
+    text-align: center;
+}
+
+#hbd {
+    margin: auto;
+    position: relative;
+    padding-top: 20px;
+    height: calc(100% - 20px);
+    width: 100%;
+}
+
+#root {
+    height: calc(100% - 300px); /* 100% – ( (42 + 8) * 2) - 200px [logo] */
+}
+
+#logo {
+    margin: auto;
+    height: 200px;
+    width: 200px;
+}
+
+.form .button {
+    display: inline;
+}
+
+.form input {
+    font-size: 20px;
+    height: 40px;
+    margin: auto;
+    margin-top: 16px;
+    position: relative;
+    width: 240px;
+}
+
+.form {
+    display: block;
+    font-size: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.form-input {
+    display: block;
+    margin: auto;
+}
+
+button {
+    background-color: #B2E6F3;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 16px 0 #B2E6F3;
+    display: block;
+    font-family: "Mandali", sans-serif;
+    font-size: 18px;
+    margin: auto;
+    padding: 4px 12px;
+}
+
+p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border: 0px;
+    color: #FFFFFF;
+    display: block;
+    overflow: auto;
+}
+
+tbody {
+    display: inline-block;
+    overflow: auto;
+}
+
+td {
+    border: 0px;
+    border-bottom-width: 0;
+    border-image-width: 0;
+    padding: 4px;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #333333;
+}
+
+tr:nth-child(odd) {
+    background-color: #222222;
+}
+
+#search-song-result {
+    margin: auto;
+    overflow: auto;
+    position: relative;
+    height: calc(100% - 110px);
+    width: 295px;
+    text-align: center;
+    z-index: 2;
+}
+
+.artist-name {
+    color: #999999;
+    font-size: 16px;
+}
+
+.song-name {
+    font-size: 20px;
+}
