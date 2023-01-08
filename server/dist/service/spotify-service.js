@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetUserInfo = exports.AuthorizeUser = exports.GetUserAuthURL = void 0;
+exports.AddToQueue = exports.Search = exports.GetUserInfo = exports.AuthorizeUser = exports.GetUserAuthURL = void 0;
 const path_1 = __importDefault(require("path"));
 const http_request_service_1 = require("./http-request-service");
 const dotenv = __importStar(require("dotenv"));
@@ -36,6 +36,9 @@ const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET || "";
 const SPOTIFY_CALLBACK = process.env.SPOTIFY_CALLBACK || "";
 const ACCOUNTS_SPOTIFY = "https://accounts.spotify.com";
 const API_SPOTIFY = "https://api.spotify.com";
+let JUKEBOX_TOKEN = "";
+let ZACK_TOKEN = "";
+let I_AM_LAZY = true;
 function responseContainsData(response) {
     if ("data" in response) {
         console.log("got data from Spotify:");
@@ -45,6 +48,27 @@ function responseContainsData(response) {
     else {
         console.log("error: missing data from Spotify");
         return false;
+    }
+}
+// need to authenticate "Jukebox" using "Client Credentials" Spotify auth flow
+async function clientCredentials() {
+    const body = {
+        grant_type: "client_credentials"
+    };
+    const id_secret_buffer = Buffer.from(SPOTIFY_ID + ":" + SPOTIFY_SECRET);
+    const base64_encoded_id_secret = id_secret_buffer.toString("base64");
+    const headers = {
+        "Authorization": "Basic " + base64_encoded_id_secret,
+        "Content-Type": "application/x-www-form-urlencoded"
+    };
+    let resp = await (0, http_request_service_1.Post)("https://accounts.spotify.com/api/token", body, headers);
+    if (responseContainsData(resp)) {
+        // all we get is { access_token, token_type (Bearer, here), expires_in (3600) }
+        I_AM_LAZY = false;
+        return resp.data.access_token;
+    }
+    else {
+        return null;
     }
 }
 // Spotify authorization code should be at least 128 chars,
@@ -112,6 +136,7 @@ async function GetUserInfo(user_token) {
     // nobody gets me
     let response = await (0, http_request_service_1.Get)(API_SPOTIFY + "/v1/me", headers);
     if (responseContainsData(response)) {
+        ZACK_TOKEN = user_token;
         return response.data;
     }
     else {
@@ -119,3 +144,45 @@ async function GetUserInfo(user_token) {
     }
 }
 exports.GetUserInfo = GetUserInfo;
+async function Search(song) {
+    if (I_AM_LAZY) {
+        JUKEBOX_TOKEN = await clientCredentials();
+    }
+    const headers = {
+        "Authorization": `Bearer ${JUKEBOX_TOKEN}`,
+        "Content-Type": "application/json"
+    };
+    const params = {
+        q: song,
+        type: "track",
+        limit: 5
+    };
+    let resp = await (0, http_request_service_1.Get)(API_SPOTIFY + "/v1/search", headers, params);
+    if (responseContainsData(resp)) {
+        return resp.data.tracks.items;
+    }
+    else {
+        return null;
+    }
+}
+exports.Search = Search;
+// it's the bread and butter!
+async function AddToQueue(songID) {
+    const headers = {
+        //"Access-Control-Allow-Origin": "*",
+        "Authorization": `Bearer ${ZACK_TOKEN}`,
+        "Content-Type": "application/json"
+    };
+    const params = {
+        uri: `spotify:track:${songID}`
+    };
+    let resp = await (0, http_request_service_1.Post)(API_SPOTIFY + "/v1/me/player/queue", null, headers, params);
+    if (resp) {
+        console.log(resp.status);
+        return { "result": "gud" };
+    }
+    else {
+        return { "result": "bad" };
+    }
+}
+exports.AddToQueue = AddToQueue;
