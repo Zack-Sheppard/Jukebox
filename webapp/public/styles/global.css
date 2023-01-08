@@ -10,3 +10,62 @@ body {
     height: 100%;
     margin: 0;
 }
+
+#not-mobile {
+    display: none;
+}
+
+@media all and (min-width: 1280px) {
+    #not-mobile {
+        color: #333333;
+        display: block;
+        font-size: 24px;
+        position: fixed;
+        right: 40px;
+        top: 130px;
+        transform: rotate(22deg);
+    }
+}
+
+#header {
+    font-family: "Edu TAS Beginner", cursive;
+    text-shadow: 0 0 3px #B2E6F3;
+}
+
+#header h1 {
+    color: #B2E6F3;
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+
+#header:hover {
+    text-shadow: 0 0 6px #0FF;
+}
+
+#header a:link, a:visited {
+    color: #B2E6F3;
+    text-decoration: none;
+}
+
+#header, #footer {
+    background-color: #333333;
+    height: 42px;
+    padding: 4px 8px;
+    text-align: center;
+}
+
+#footer {
+    bottom: 0;
+    font-size: 20px;
+    position: relative;
+}
+
+#github-logo, #footer p {
+    color: aliceblue;
+    display: inline;
+    vertical-align: top;
+}
+
+#github-logo {
+    margin: 5px 5px;
+}
