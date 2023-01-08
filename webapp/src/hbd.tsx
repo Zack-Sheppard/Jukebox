@@ -143,7 +143,7 @@ class Host extends React.Component<{},
       searching: false
     }));
     console.log("adding to queue: " + track.trackName);
-    fetch(`http://localhost:3005/add?songID=${track.spotifyID}`) // !!!!!
+    fetch(`https://myjukebox.ca/add?songID=${track.spotifyID}`) // !!!!!
     .then(response => response.json())
     .then(data => {
       console.log("server responded with:");
