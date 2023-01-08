@@ -46,16 +46,16 @@ init();
 // only valid for closed alpha users
 function FindRoomNumber(email) {
     // closed alpha validation
-    for (let i = 0; i < closed_alpha.length; i++) {
-        if (closed_alpha[i].email == email) {
-            let room = closed_alpha[i].room;
-            console.log("Found user x with room y:");
-            console.log(email);
-            console.log(room);
-            return room;
-        }
-    }
-    return "";
+    // for(let i = 0; i < closed_alpha.length; i++) {
+    //     if(closed_alpha[i].email == email) {
+    //         let room: string = closed_alpha[i].room;
+    //         console.log("Found user x with room y:");
+    //         console.log(email);
+    //         console.log(room);
+    //         return room;
+    //     }
+    // }
+    return "999";
 }
 exports.FindRoomNumber = FindRoomNumber;
 function GetToken(roomNum) {
