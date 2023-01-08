@@ -3,7 +3,9 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    "home": "./src/home.tsx"
+    "home": "./src/home.tsx",
+    "host": "./src/host.tsx",
+    "hbd": "./src/hbd.tsx"
   },
   mode: "development",
   output: {
@@ -15,7 +17,7 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/,}
+      { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/, }
     ]
   }
 };
