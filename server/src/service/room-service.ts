@@ -28,7 +28,14 @@ async function init() {
     catch(e) {
         console.log("Error reading configs:");
         console.log(e);
-        process.exit();
+        //process.exit();
+        console.log("Bypassing closed alpha file");
+        console.log("Booting up rooms...");
+        for(let i = 0; i < 1000; i++) {
+            rooms[i] = new Room(i);
+        }
+        console.log("Rooms are ready");
+        return;
     }
     console.log("Closed alpha config contents:");
     closed_alpha = ca_file.authorized_users;
