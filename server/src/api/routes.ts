@@ -106,10 +106,6 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
     res.redirect("/spotify/host?room=" + room_num);
 });
 
-router.get("/secret-birthday-party", (req: Request, res: Response) => {
-    res.render("hbd");
-});
-
 router.get("/spotify/host", (req: Request, res: Response) => {
 
     let spotify_token = req.cookies ? req.cookies["SpofityToken"] : null;
@@ -166,15 +162,6 @@ router.post("/spotify/search", async (req: Request,
     else {
         throw new Error("Spotify search: no payload found");
     }
-});
-
-// add to queue
-router.get("/add", async (req, res) => {
-    console.log("Adding song to room 999");
-    console.log(req.query);
-    let r = await SpotifyService.AddToQueue(req.query.songID as string);
-    res.set("Access-Control-Allow-Origin", "*"); // ?
-    res.send(r);
 });
 
 // handle 5XXs
