@@ -6,40 +6,30 @@ import { Room } from "../model/room";
 const rooms: Room[] = [];
 
 import path from "path";
+import * as dotenv from "dotenv";
+dotenv.config({ path: path.join(__dirname, "../../.env") });
 
-// closed alpha
-import { readFile } from 'fs/promises';
+const CA_0_EMAIL: string = process.env.CA_0_EMAIL || "";
+const CA_0_ROOM: string = process.env.CA_0_ROOM || "";
 
 interface ClosedAlphaUser {
     email: string,
-    name: string,
     room: string
 }
 
-let closed_alpha: ClosedAlphaUser[];
+const closed_alpha: ClosedAlphaUser[] = [];
 
-async function init() {
-    let ca_file;
-    console.log("Reading closed alpha config file...");
-    try {
-        ca_file = JSON.parse(await readFile(
-            path.join(__dirname, "../../config/closed-alpha.json"), "utf8"));
-    }
-    catch(e) {
+function init() {
+
+    // get closed alpha users info
+    if(CA_0_EMAIL == "" || CA_0_ROOM == "") {
         console.log("Error reading configs:");
-        console.log(e);
-        //process.exit();
-        console.log("Bypassing closed alpha file");
-        console.log("Booting up rooms...");
-        for(let i = 0; i < 1000; i++) {
-            rooms[i] = new Room(i);
-        }
-        console.log("Rooms are ready");
-        return;
+        process.exit();
     }
+
+    closed_alpha[0] = { "email": CA_0_EMAIL, "room": CA_0_ROOM };
+
     console.log("Closed alpha config contents:");
-    closed_alpha = ca_file.authorized_users;
-    console.log(closed_alpha.length);
     for(let i = 0; i < closed_alpha.length; i++) {
         console.log(closed_alpha[i]);
     }
@@ -55,18 +45,18 @@ async function init() {
 init();
 
 // only valid for closed alpha users
-function FindRoomNumber(email: string) {
+function FindRoomNumber(email: string): string {
     // closed alpha validation
-    // for(let i = 0; i < closed_alpha.length; i++) {
-    //     if(closed_alpha[i].email == email) {
-    //         let room: string = closed_alpha[i].room;
-    //         console.log("Found user x with room y:");
-    //         console.log(email);
-    //         console.log(room);
-    //         return room;
-    //     }
-    // }
-    return "999";
+    for(let i = 0; i < closed_alpha.length; i++) {
+        if(closed_alpha[i].email == email) {
+            let room: string = closed_alpha[i].room;
+            console.log("Found user x with room y:");
+            console.log(email);
+            console.log(room);
+            return room;
+        }
+    }
+    return "";
 }
 
 function GetToken(roomNum: string) {
@@ -82,10 +72,10 @@ function GetTokenExp(roomNum: string) {
 }
 
 // set token expiry to one hour minus 5 minutes for a cushion
-function SetTokenExp(roomNum: string, token: string) {
+function SetToken(roomNum: string, token: string) {
     let roomNumber: number = Number(roomNum);
     rooms[roomNumber].token = token;
     rooms[roomNumber].tokenExpiresAt = Date.now() + (60 * (60 - 5) * 1000);
 }
 
-export { FindRoomNumber, GetToken, GetTokenExp, SetTokenExp };
+export { FindRoomNumber, GetToken, GetTokenExp, SetToken };
