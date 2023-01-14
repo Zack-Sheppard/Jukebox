@@ -158,7 +158,6 @@ class Guest extends React.Component<{},
   render() {
     return (
     <div id="guest">
-      <h2>Happy Birthday Justin!</h2>
       <Form
         name="song"
         maxLength={48}
