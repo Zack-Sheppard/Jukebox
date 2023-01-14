@@ -100,37 +100,39 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
     res.cookie("SpofityToken", token);
     res.cookie("ScreenName", screen_name);
 
-    RoomService.SetTokenExp(room_num, token);
+    RoomService.SetToken(room_num, token);
 
     room_num = encodeURIComponent(room_num);
     res.redirect("/spotify/host?room=" + room_num);
 });
 
-router.get("/spotify/host", (req: Request, res: Response) => {
+router.get("/spotify/host", (req: Request,
+                             res: Response,
+                             next: NextFunction) => {
 
     let spotify_token = req.cookies ? req.cookies["SpofityToken"] : null;
     let screen_name: string = req.cookies ? req.cookies["ScreenName"] : "";
     let room_number: string = "";
 
-    if(req.query) { // always true unless query-parser is set to false
-        if(req.query.room) {
-            room_number = req.query.room as string;
-            if(spotify_token) {
-                if(spotify_token == RoomService.GetToken(room_number)) {
-                    console.log("token matches internal room");
-                }
-                else {
-                    throw new Error("Spotify token mismatch");
-                }
-            }
-            else {
-                throw new Error("no Spotify token found");
-            }
-        }
+    // req.query always true unless query-parser is set to false
+    if(!req.query || !req.query.room) {
+        next(new Error("Spotify host: failed to find room param"));
     }
 
+    room_number = req.query.room as string;
+
+    if(!spotify_token) {
+        next(new Error("no Spotify token found"));
+    }
+
+    if(spotify_token != RoomService.GetToken(room_number)) {
+        next(new Error("Spotify token mismatch"));
+    }
+
+    console.log("token matches internal room");
+
     if(screen_name.length > 32) { // potentially malicious? Spotify caps at 30
-        throw new Error("bad name param");
+        next(new Error("bad name param"));
     }
 
     res.render("host", { room: room_number, name: screen_name });
@@ -147,21 +149,20 @@ router.post("/spotify/search", async (req: Request,
                                       next: NextFunction) => {
 
     let song: string = "Never Gonna Give You Up";
-    if(req.body) {
-        console.log(req.body);
-        if(req.body.song) {
-            song = req.body.song as string;
-            if(song.length > 48) {
-                throw new Error("Spotify search: param too long");
-            }
-            console.log("Searching for track ^ on Spotify...");
-        }
-        let itemArray = await SpotifyService.Search(song);
-        res.send({ "result": itemArray });
+    if(!req.body || !req.body.song) {
+        next(new Error("Spotify search: no payload found"));
     }
-    else {
-        throw new Error("Spotify search: no payload found");
+
+    song = req.body.song as string;
+    if(song.length > 48) {
+        throw new Error("Spotify search: param too long");
     }
+
+    //console.log(req.body);
+    //console.log("Searching for track ^ on Spotify...");
+
+    let itemArray = await SpotifyService.Search(song);
+    res.send({ "result": itemArray });
 });
 
 // handle 5XXs
