@@ -5,7 +5,7 @@ module.exports = {
   entry: {
     "home": "./src/home.tsx",
     "host": "./src/host.tsx",
-    "hbd": "./src/hbd.tsx"
+    "guest": "./src/guest.tsx"
   },
   mode: "development",
   output: {

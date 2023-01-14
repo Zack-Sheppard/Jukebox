@@ -99,7 +99,7 @@ class SearchResult extends React.Component<SearchResultProps, {something: string
   }
 }
 
-class Host extends React.Component<{},
+class Guest extends React.Component<{},
                                    {searching: boolean,
                                     search: string,
                                     searchResults: any[]}> {
@@ -157,7 +157,7 @@ class Host extends React.Component<{},
 
   render() {
     return (
-    <div id="hbd">
+    <div id="guest">
       <h2>Happy Birthday Justin!</h2>
       <Form
         name="song"
@@ -177,4 +177,4 @@ class Host extends React.Component<{},
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Host/>);
+root.render(<Guest/>);
