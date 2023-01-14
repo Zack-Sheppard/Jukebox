@@ -36,9 +36,10 @@ const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET || "";
 const SPOTIFY_CALLBACK = process.env.SPOTIFY_CALLBACK || "";
 const ACCOUNTS_SPOTIFY = "https://accounts.spotify.com";
 const API_SPOTIFY = "https://api.spotify.com";
-let JUKEBOX_TOKEN = "";
-let ZACK_TOKEN = "";
-let I_AM_LAZY = true;
+const QUEUE = "/v1/me/player/queue";
+const SEARCH_LIMIT = 5;
+let jukeboxToken = "";
+let jbTokenExpiresAt = Date.now();
 function responseContainsData(response) {
     if ("data" in response) {
         console.log("got data from Spotify:");
@@ -50,8 +51,21 @@ function responseContainsData(response) {
         return false;
     }
 }
+function shouldRefreshJukeboxToken() {
+    let tokenExpiresIn = jbTokenExpiresAt - Date.now();
+    console.log("Jukebox token expires in (millseconds):");
+    console.log(tokenExpiresIn);
+    // if token expires in 5 minutes or less
+    if (tokenExpiresIn <= (5 * 60 * 1000)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 // need to authenticate "Jukebox" using "Client Credentials" Spotify auth flow
 async function clientCredentials() {
+    console.log("refreshing Jukebox token...");
     const body = {
         grant_type: "client_credentials"
     };
@@ -61,10 +75,10 @@ async function clientCredentials() {
         "Authorization": "Basic " + base64_encoded_id_secret,
         "Content-Type": "application/x-www-form-urlencoded"
     };
-    let resp = await (0, http_request_service_1.Post)("https://accounts.spotify.com/api/token", body, headers);
+    let resp = await (0, http_request_service_1.Post)(ACCOUNTS_SPOTIFY + "/api/token", body, headers);
+    // rcv { access_token, token_type (Bearer, here), expires_in (3600) }
     if (responseContainsData(resp)) {
-        // all we get is { access_token, token_type (Bearer, here), expires_in (3600) }
-        I_AM_LAZY = false;
+        jbTokenExpiresAt = Date.now() + (resp.data.expires_in * 1000);
         return resp.data.access_token;
     }
     else {
@@ -136,7 +150,6 @@ async function GetUserInfo(user_token) {
     // nobody gets me
     let response = await (0, http_request_service_1.Get)(API_SPOTIFY + "/v1/me", headers);
     if (responseContainsData(response)) {
-        ZACK_TOKEN = user_token;
         return response.data;
     }
     else {
@@ -145,17 +158,17 @@ async function GetUserInfo(user_token) {
 }
 exports.GetUserInfo = GetUserInfo;
 async function Search(song) {
-    if (I_AM_LAZY) {
-        JUKEBOX_TOKEN = await clientCredentials();
+    if (shouldRefreshJukeboxToken()) {
+        jukeboxToken = await clientCredentials();
     }
     const headers = {
-        "Authorization": `Bearer ${JUKEBOX_TOKEN}`,
+        "Authorization": `Bearer ${jukeboxToken}`,
         "Content-Type": "application/json"
     };
     const params = {
         q: song,
         type: "track",
-        limit: 5
+        limit: SEARCH_LIMIT
     };
     let resp = await (0, http_request_service_1.Get)(API_SPOTIFY + "/v1/search", headers, params);
     if (responseContainsData(resp)) {
@@ -167,19 +180,17 @@ async function Search(song) {
 }
 exports.Search = Search;
 // it's the bread and butter!
-async function AddToQueue(songID) {
+async function AddToQueue(songID, user_token) {
     const headers = {
-        //"Access-Control-Allow-Origin": "*",
-        "Authorization": `Bearer ${ZACK_TOKEN}`,
+        "Authorization": `Bearer ${user_token}`,
         "Content-Type": "application/json"
     };
     const params = {
         uri: `spotify:track:${songID}`
     };
-    let resp = await (0, http_request_service_1.Post)(API_SPOTIFY + "/v1/me/player/queue", null, headers, params);
-    if (resp) {
-        console.log(resp.status);
-        return { "result": "gud" };
+    let resp = await (0, http_request_service_1.Post)(API_SPOTIFY + QUEUE, null, headers, params);
+    if (resp && resp.status == 204) {
+        return { "result": "good" };
     }
     else {
         return { "result": "bad" };

@@ -4,16 +4,19 @@ import { Get, Post } from "./http-request-service";
 
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, "../../.env") });
-const SPOTIFY_ID: string = process.env.SPOTIFY_ID || "";
-const SPOTIFY_SECRET: string = process.env.SPOTIFY_SECRET || "";
+
+const SPOTIFY_ID:       string = process.env.SPOTIFY_ID || "";
+const SPOTIFY_SECRET:   string = process.env.SPOTIFY_SECRET || "";
 const SPOTIFY_CALLBACK: string = process.env.SPOTIFY_CALLBACK || "";
 
 const ACCOUNTS_SPOTIFY: string = "https://accounts.spotify.com";
-const API_SPOTIFY: string = "https://api.spotify.com";
+const API_SPOTIFY:      string = "https://api.spotify.com";
+const QUEUE:            string = "/v1/me/player/queue";
 
-let JUKEBOX_TOKEN: string = "";
-let ZACK_TOKEN: string = "";
-let I_AM_LAZY: boolean = true;
+const SEARCH_LIMIT: number = 5;
+
+let jukeboxToken: string = "";
+let jbTokenExpiresAt: number = Date.now();
 
 type dataBearingObject = {
     data: any
@@ -31,8 +34,26 @@ function responseContainsData(response: any): response is dataBearingObject {
     }
 }
 
+function shouldRefreshJukeboxToken(): boolean {
+
+    let tokenExpiresIn: number = jbTokenExpiresAt - Date.now();
+
+    console.log("Jukebox token expires in (millseconds):");
+    console.log(tokenExpiresIn);
+
+    // if token expires in 5 minutes or less
+    if (tokenExpiresIn <= (5 * 60 * 1000)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 // need to authenticate "Jukebox" using "Client Credentials" Spotify auth flow
 async function clientCredentials() {
+
+    console.log("refreshing Jukebox token...");
 
     const body = {
         grant_type: "client_credentials"
@@ -46,11 +67,11 @@ async function clientCredentials() {
         "Content-Type": "application/x-www-form-urlencoded"
     }
 
-    let resp = await Post("https://accounts.spotify.com/api/token", body, headers);
+    let resp = await Post(ACCOUNTS_SPOTIFY + "/api/token", body, headers);
+    // rcv { access_token, token_type (Bearer, here), expires_in (3600) }
 
     if(responseContainsData(resp)) {
-        // all we get is { access_token, token_type (Bearer, here), expires_in (3600) }
-        I_AM_LAZY = false;
+        jbTokenExpiresAt = Date.now() + (resp.data.expires_in * 1000);
         return resp.data.access_token;
     }
     else {
@@ -137,7 +158,6 @@ async function GetUserInfo(user_token: string) {
     let response = await Get(API_SPOTIFY + "/v1/me", headers);
 
     if(responseContainsData(response)) {
-        ZACK_TOKEN = user_token;
         return response.data;
     }
     else {
@@ -146,19 +166,20 @@ async function GetUserInfo(user_token: string) {
 }
 
 async function Search(song: string) {
-    if(I_AM_LAZY) {
-        JUKEBOX_TOKEN = await clientCredentials();
+
+    if(shouldRefreshJukeboxToken()) {
+        jukeboxToken = await clientCredentials();
     }
 
     const headers = {
-        "Authorization": `Bearer ${JUKEBOX_TOKEN}`,
+        "Authorization": `Bearer ${jukeboxToken}`,
         "Content-Type": "application/json"
     }
 
     const params = {
         q: song,
         type: "track",
-        limit: 5
+        limit: SEARCH_LIMIT
     }
 
     let resp = await Get(API_SPOTIFY + "/v1/search", headers, params);
@@ -172,10 +193,10 @@ async function Search(song: string) {
 }
 
 // it's the bread and butter!
-async function AddToQueue(songID: string) {
+async function AddToQueue(songID: string, user_token: string) {
 
     const headers = {
-        "Authorization": `Bearer ${ZACK_TOKEN}`,
+        "Authorization": `Bearer ${user_token}`,
         "Content-Type": "application/json"
     };
 
@@ -183,11 +204,10 @@ async function AddToQueue(songID: string) {
         uri: `spotify:track:${songID}`
     };
 
-    let resp = await Post(API_SPOTIFY + "/v1/me/player/queue", null, headers, params);
+    let resp = await Post(API_SPOTIFY + QUEUE, null, headers, params);
 
-    if(resp) {
-        console.log(resp.status);
-        return { "result": "gud" };
+    if(resp && resp.status == 204) {
+        return { "result": "good" };
     }
     else {
         return { "result": "bad" };
