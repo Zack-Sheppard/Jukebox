@@ -15,11 +15,11 @@ interface FormProps {
   onResponse: Function
 }
 
-export default class Form extends React.Component<FormProps, {search: string}> {
+export default class Form extends React.Component<FormProps, {value: string}> {
   constructor(props: FormProps) {
     super(props);
     this.state = {
-      search: ""
+      value: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,22 +28,26 @@ export default class Form extends React.Component<FormProps, {search: string}> {
   handleChange(e: any) {
     e.preventDefault();
     this.setState(() => ({
-      search: e.target.value
+      value: e.target.value
     }));
   }
 
   handleSubmit(e: any) {
     e.preventDefault();
-    this.postData(this.props.uri, {song: this.state.search}, this.props.onResponse);
+    let label: string = this.props.name;
+    let payload = {
+      [label]: this.state.value
+    };
+    this.postData(this.props.uri, payload, this.props.onResponse);
     this.setState(() => ({
-      search: ""
+      value: ""
     }));
   }
 
   postData(url: string, data: any, cb: Function) {
     console.log("Sending to server:");
     console.log(data);
-    const response = fetch(url, {
+    fetch(url, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -51,16 +55,20 @@ export default class Form extends React.Component<FormProps, {search: string}> {
       },
       body: new URLSearchParams(data)
     })
-    .then(response => response.json())
+    .then(response => {
+      if(!response.ok) {
+        throw new Error("Bad network response");
+      }
+      return response.json();
+    })
     .then(data => {
-        console.log("Server responded with:");
-        console.log(data);
-        // this.setState(() => ({
-        //   result: data.result
-        // }));
-        cb(data);
+      console.log("Server responded with:");
+      console.log(data);
+      cb(data);
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
     });
-    // catch
   }
 
   render() {
@@ -73,7 +81,7 @@ export default class Form extends React.Component<FormProps, {search: string}> {
             name={this.props.name}
             onChange={this.handleChange}
             placeholder={this.props.placeholder}
-            value={this.state.search}/>
+            value={this.state.value}/>
           <Button
             type="submit"
             text="Go"
