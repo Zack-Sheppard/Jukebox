@@ -23,6 +23,12 @@ router.get("/", (req: Request, res: Response) => {
     res.render("home");
 });
 
+// join room as guest
+router.get(/\/room\/[0-9][0-9][0-9]/, (req: Request, res: Response) => {
+    let roomNum: string = req.url.slice(6, 9);
+    res.render("guest", { num: roomNum });
+});
+
 // custom URI for closed-alpha room creation
 router.get("/ca/create", (req: Request, res: Response) => {
     let state: string = GenerateRandomAlphanumericString(16);
