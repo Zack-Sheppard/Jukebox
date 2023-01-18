@@ -143,15 +143,13 @@ router.use("/spotify/search", (0, express_1.urlencoded)({
 }));
 router.post("/spotify/search", async (req, res, next) => {
     let song = "Never Gonna Give You Up";
-    if (!req.body || !req.body.song) {
-        next(new Error("Spotify search: no payload found"));
+    if (req.body && req.body.song) {
+        song = req.body.song;
     }
-    song = req.body.song;
     if (song.length > 48) {
-        throw new Error("Spotify search: param too long");
+        next(new Error("Spotify search: param too long"));
+        return;
     }
-    //console.log(req.body);
-    //console.log("Searching for track ^ on Spotify...");
     let itemArray = await SpotifyService.Search(song);
     res.send({ "result": itemArray });
 });
