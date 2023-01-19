@@ -170,24 +170,24 @@ router.post("/spotify/search", async (req: Request,
 
 // add to queue
 router.get(/\/room\/[0-9][0-9][0-9]\/add/, async (req: Request,
-    res: Response,
-    next: NextFunction) => {
+                                                  res: Response,
+                                                  next: NextFunction) => {
 
-let roomNum: string = req.url.slice(6, 9);
-let songID: string = "";
+    let roomNum: string = req.url.slice(6, 9);
+    let songID: string = "";
 
-if(!req.query || !req.query.songID) {
-next(new Error("Room add: no song param"));
-return;
-}
+    if(!req.query || !req.query.songID) {
+    next(new Error("Room add: no song param"));
+    return;
+    }
 
-songID = req.query.songID as string
+    songID = req.query.songID as string
 
-console.log("Adding song to room", roomNum);
-console.log(req.query);
+    console.log("Adding song to room", roomNum);
+    console.log(req.query);
 
-let result = await SpotifyService.AddToQueue(songID, roomNum);
-res.send(result);
+    let result = await SpotifyService.AddToQueue(songID, roomNum);
+    res.send(result);
 });
 
 // handle 5XXs
