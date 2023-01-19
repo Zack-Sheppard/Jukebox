@@ -4,6 +4,7 @@ exports.Room = void 0;
 class Room {
     constructor(rn) {
         this.token = "";
+        this.refreshToken = "";
         this.tokenExpiresAt = 0; // Unix timestamp
         this.num = rn;
         this.tokenExpiresAt = Date.now();
