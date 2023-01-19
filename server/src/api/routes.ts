@@ -68,13 +68,13 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
     }
 
     let authorization_code: string = req.query.code as string;
-    let token: string = await SpotifyService.AuthorizeUser(authorization_code);
-    if(!token) {
-        next(new Error("Spotify: null access token"));
+    let tokens: any = await SpotifyService.AuthorizeUser(authorization_code);
+    if(!tokens) {
+        next(new Error("Spotify: null access token(s)"));
         return;
     }
 
-    let user_info = await SpotifyService.GetUserInfo(token);
+    let user_info = await SpotifyService.GetUserInfo(tokens[0]);
 
     if(!user_info) {
         next(new Error("Spotify: failed to get user info"));
@@ -103,10 +103,10 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
     }
 
     // passed all checks, set some cookies
-    res.cookie("SpofityToken", token);
+    res.cookie("SpofityToken", tokens[0]);
     res.cookie("ScreenName", screen_name);
 
-    RoomService.SetToken(room_num, token);
+    RoomService.SetTokens(room_num, tokens[0], tokens[1]);
 
     room_num = encodeURIComponent(room_num);
     res.redirect("/spotify/host?room=" + room_num);
@@ -131,7 +131,7 @@ router.get("/spotify/host", (req: Request,
         next(new Error("no Spotify token found"));
     }
 
-    if(spotify_token != RoomService.GetToken(room_number)) {
+    if(spotify_token != RoomService.GetTokens(room_number)[0]) {
         next(new Error("Spotify token mismatch"));
     }
 

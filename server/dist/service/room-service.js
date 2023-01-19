@@ -27,7 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SetToken = exports.GetTokenExp = exports.GetToken = exports.FindRoomNumber = void 0;
+exports.SetTokens = exports.GetTokenExp = exports.GetTokens = exports.FindRoomNumber = void 0;
 const room_1 = require("../model/room");
 const rooms = [];
 const path_1 = __importDefault(require("path"));
@@ -70,22 +70,23 @@ function FindRoomNumber(email) {
     return "";
 }
 exports.FindRoomNumber = FindRoomNumber;
-function GetToken(roomNum) {
+function GetTokens(roomNum) {
     let roomNumber = 0;
     roomNumber = Number(roomNum);
-    return rooms[roomNumber].token;
+    return [rooms[roomNumber].token, rooms[roomNumber].refreshToken];
 }
-exports.GetToken = GetToken;
+exports.GetTokens = GetTokens;
 function GetTokenExp(roomNum) {
     let roomNumber = 0;
     roomNumber = Number(roomNum);
     return rooms[roomNumber].tokenExpiresAt;
 }
 exports.GetTokenExp = GetTokenExp;
-// set token expiry to one hour minus 5 minutes for a cushion
-function SetToken(roomNum, token) {
+// set token expiry to one hour minus 3 minutes for a cushion
+function SetTokens(roomNum, token, refreshToken) {
     let roomNumber = Number(roomNum);
     rooms[roomNumber].token = token;
-    rooms[roomNumber].tokenExpiresAt = Date.now() + (60 * (60 - 5) * 1000);
+    rooms[roomNumber].refreshToken = refreshToken;
+    rooms[roomNumber].tokenExpiresAt = Date.now() + (60 * (60 - 3) * 1000);
 }
-exports.SetToken = SetToken;
+exports.SetTokens = SetTokens;

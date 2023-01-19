@@ -59,10 +59,10 @@ function FindRoomNumber(email: string): string {
     return "";
 }
 
-function GetToken(roomNum: string) {
+function GetTokens(roomNum: string) {
     let roomNumber: number = 0;
     roomNumber = Number(roomNum);
-    return rooms[roomNumber].token;
+    return [ rooms[roomNumber].token, rooms[roomNumber].refreshToken ];
 }
 
 function GetTokenExp(roomNum: string) {
@@ -71,11 +71,12 @@ function GetTokenExp(roomNum: string) {
     return rooms[roomNumber].tokenExpiresAt;
 }
 
-// set token expiry to one hour minus 5 minutes for a cushion
-function SetToken(roomNum: string, token: string) {
+// set token expiry to one hour minus 3 minutes for a cushion
+function SetTokens(roomNum: string, token: string, refreshToken: string) {
     let roomNumber: number = Number(roomNum);
     rooms[roomNumber].token = token;
-    rooms[roomNumber].tokenExpiresAt = Date.now() + (60 * (60 - 5) * 1000);
+    rooms[roomNumber].refreshToken = refreshToken;
+    rooms[roomNumber].tokenExpiresAt = Date.now() + (60 * (60 - 3) * 1000);
 }
 
-export { FindRoomNumber, GetToken, GetTokenExp, SetToken };
+export { FindRoomNumber, GetTokens, GetTokenExp, SetTokens };
