@@ -29,6 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddToQueue = exports.Search = exports.GetUserInfo = exports.AuthorizeUser = exports.GetUserAuthURL = void 0;
 const path_1 = __importDefault(require("path"));
 const http_request_service_1 = require("./http-request-service");
+const room_service_1 = require("./room-service");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: path_1.default.join(__dirname, "../../.env") });
 const SPOTIFY_ID = process.env.SPOTIFY_ID || "";
@@ -63,6 +64,16 @@ function shouldRefreshJukeboxToken() {
         return false;
     }
 }
+function shouldRefreshUserToken(roomNum) {
+    let tokenExpiresIn = (0, room_service_1.GetTokenExp)(roomNum) - Date.now();
+    // if token expires in 5 minutes or less
+    if (tokenExpiresIn <= (5 * 60 * 1000)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 // need to authenticate "Jukebox" using "Client Credentials" Spotify auth flow
 async function clientCredentials() {
     console.log("refreshing Jukebox token...");
@@ -79,6 +90,30 @@ async function clientCredentials() {
     // rcv { access_token, token_type (Bearer, here), expires_in (3600) }
     if (responseContainsData(resp)) {
         jbTokenExpiresAt = Date.now() + (resp.data.expires_in * 1000);
+        return resp.data.access_token;
+    }
+    else {
+        return null;
+    }
+}
+async function refreshUserToken(roomNum) {
+    console.log("refreshing Spotify user token in room " + roomNum);
+    // get user refresh token from room N
+    let userRefreshToken = (0, room_service_1.GetTokens)(roomNum)[1];
+    const body = {
+        grant_type: "refresh_token",
+        refresh_token: userRefreshToken
+    };
+    const id_secret_buffer = Buffer.from(SPOTIFY_ID + ":" + SPOTIFY_SECRET);
+    const base64_encoded_id_secret = id_secret_buffer.toString("base64");
+    const headers = {
+        "Authorization": "Basic " + base64_encoded_id_secret,
+        "Content-Type": "application/x-www-form-urlencoded"
+    };
+    let resp = await (0, http_request_service_1.Post)(ACCOUNTS_SPOTIFY + "/api/token", body, headers);
+    // should receive { access_token, token_type, scope, expires_in }
+    if (responseContainsData(resp)) {
+        (0, room_service_1.SetTokens)(roomNum, resp.data.access_token, userRefreshToken);
         return resp.data.access_token;
     }
     else {
@@ -134,7 +169,7 @@ async function AuthorizeUser(authorization_code) {
     };
     let response = await (0, http_request_service_1.Post)(ACCOUNTS_SPOTIFY + "/api/token", body, headers);
     if (responseContainsData(response)) {
-        return response.data.access_token;
+        return [response.data.access_token, response.data.refresh_token];
     }
     else {
         return null;
@@ -180,7 +215,14 @@ async function Search(song) {
 }
 exports.Search = Search;
 // it's the bread and butter!
-async function AddToQueue(songID, user_token) {
+async function AddToQueue(songID, roomNum) {
+    let user_token = "";
+    if (shouldRefreshUserToken(roomNum)) {
+        user_token = await refreshUserToken(roomNum);
+    }
+    else {
+        user_token = (0, room_service_1.GetTokens)(roomNum)[0];
+    }
     const headers = {
         "Authorization": `Bearer ${user_token}`,
         "Content-Type": "application/json"
@@ -190,10 +232,10 @@ async function AddToQueue(songID, user_token) {
     };
     let resp = await (0, http_request_service_1.Post)(API_SPOTIFY + QUEUE, null, headers, params);
     if (resp && resp.status == 204) {
-        return { "result": "good" };
+        return { "result": "success" };
     }
     else {
-        return { "result": "bad" };
+        return { "result": "fail" };
     }
 }
 exports.AddToQueue = AddToQueue;
