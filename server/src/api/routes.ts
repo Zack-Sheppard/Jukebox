@@ -24,7 +24,7 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 // join room as guest
-router.get(/\/room\/[0-9][0-9][0-9]/, (req: Request, res: Response) => {
+router.get(/\/room\/[0-9][0-9][0-9]$/, (req: Request, res: Response) => {
     let roomNum: string = req.url.slice(6, 9);
     res.render("guest", { num: roomNum });
 });
@@ -166,6 +166,28 @@ router.post("/spotify/search", async (req: Request,
 
     let itemArray = await SpotifyService.Search(song);
     res.send({ "result": itemArray });
+});
+
+// add to queue
+router.get(/\/room\/[0-9][0-9][0-9]\/add/, async (req: Request,
+    res: Response,
+    next: NextFunction) => {
+
+let roomNum: string = req.url.slice(6, 9);
+let songID: string = "";
+
+if(!req.query || !req.query.songID) {
+next(new Error("Room add: no song param"));
+return;
+}
+
+songID = req.query.songID as string
+
+console.log("Adding song to room", roomNum);
+console.log(req.query);
+
+let result = await SpotifyService.AddToQueue(songID, roomNum);
+res.send(result);
 });
 
 // handle 5XXs
