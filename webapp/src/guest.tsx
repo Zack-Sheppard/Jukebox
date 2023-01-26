@@ -7,6 +7,9 @@ import {} from "react/next";
 
 import Form from "./components/form";
 
+const url: string = window.location.href;
+const room_number: string = url.slice(-3);
+
 class SpotifyTrack {
   trackName: string;
   artistName: string;
@@ -44,12 +47,9 @@ interface SearchResultProps {
   onClick: ((s: SpotifyTrack) => any)
 }
 
-class SearchResult extends React.Component<SearchResultProps, {something: string}> {
+class SearchResult extends React.Component<SearchResultProps> {
   constructor(props: SearchResultProps) {
     super(props);
-    this.state = {
-      something: "",
-    };
   }
 
   renderRow(i: number) {
@@ -115,7 +115,6 @@ class Guest extends React.Component<{},
   }
 
   handleSearchRes(res: any) {
-    // check for error TODO
     let resultArray = res.result;
     console.log("number of incoming results:");
     console.log(resultArray.length);
@@ -143,15 +142,19 @@ class Guest extends React.Component<{},
       searching: false
     }));
     console.log("adding to queue: " + track.trackName);
-    fetch(`https://myjukebox.ca/add?songID=${track.spotifyID}`) // !!!!!
-    .then(response => response.json())
+    fetch(`/room/${room_number}/add?songID=${track.spotifyID}`)
+    .then(response => {
+      if(!response.ok) {
+        throw new Error("bad network response");
+      }
+      return response.json();
+    })
     .then(data => {
       console.log("server responded with:");
       console.log(data);
     })
     .catch(error => {
-      console.log("there was an error :s");
-      console.log(error);
+      console.log("there was an error:", error);
     });
   }
 
