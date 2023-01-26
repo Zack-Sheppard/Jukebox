@@ -12,7 +12,8 @@ interface ButtonProps {
   text: string
 }
 
-export default class Button extends React.Component<ButtonProps, {clicked: boolean}> {
+export default class Button extends React.Component<ButtonProps,
+                                                    { clicked: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = {
