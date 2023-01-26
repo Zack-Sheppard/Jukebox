@@ -13,6 +13,13 @@
 
 <%- include("../pieces/header"); -%>
 
+<% if (num) { %>
+  <div id="room-num">
+    <p>Room</h2>
+    <p><%= num %></h2>
+  </div>
+<% } %>
+
 <div id="root"></div>
 
 <%- include("../pieces/not-mobile"); -%>
