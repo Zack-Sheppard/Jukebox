@@ -7,8 +7,21 @@
     width: 100%;
 }
 
+#room-num {
+    font-size: 20px;
+    top: 56px;
+    right: 24px;
+    position: absolute;
+    text-align: center;
+}
+
+#room-num p {
+    margin-block-end: -18px;
+}
+
 #root {
-    height: calc(100% - 300px); /* 100% – ( (42 + 8) * 2) - 200px [logo] */
+    margin-top: 60px;
+    height: calc(100% - 360px); /* 100% – (header+logo+footer) - 60px */
 }
 
 #logo {
@@ -63,13 +76,13 @@ table {
     border-collapse: collapse;
     border: 0px;
     color: #FFFFFF;
+    font-size: 8px;
     display: block;
     overflow: auto;
 }
 
 tbody {
-    display: inline-block;
-    overflow: auto;
+    display: block;
 }
 
 td {
@@ -78,6 +91,10 @@ td {
     border-image-width: 0;
     padding: 4px;
     text-align: left;
+}
+
+tr {
+    display: block;
 }
 
 tr:nth-child(even) {
@@ -92,17 +109,23 @@ tr:nth-child(odd) {
     margin: auto;
     overflow: auto;
     position: relative;
-    height: calc(100% - 110px);
+    height: calc(100% - 70px);
     width: 295px;
-    text-align: center;
     z-index: 2;
+}
+
+table img {
+    display: block;
 }
 
 .artist-name {
     color: #999999;
     font-size: 16px;
+    margin-block-start: -8px;
 }
 
 .song-name {
-    font-size: 20px;
+    font-size: 18px;
+    margin-block-start: -8px;
+    line-height: 24px;
 }
