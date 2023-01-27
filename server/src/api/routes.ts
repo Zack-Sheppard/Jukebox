@@ -8,6 +8,7 @@ const CB_URI: string = process.env.CB_URI || "/callback";
 import * as SpotifyService from "../service/spotify-service";
 import * as RoomService from "../service/room-service";
 import { GenerateRandomAlphanumericString } from "../utils/string-utils";
+import { IsValidRoomNumber } from "../utils/room-utils";
 
 const router = Router();
 
@@ -126,6 +127,9 @@ router.get("/spotify/host", (req: Request,
     }
 
     room_number = req.query.room as string;
+    if(!IsValidRoomNumber(room_number)) {
+        next(new Error("invalid room number"));
+    }
 
     if(!spotify_token) {
         next(new Error("no Spotify token found"));
@@ -177,8 +181,8 @@ router.get(/\/room\/[0-9][0-9][0-9]\/add/, async (req: Request,
     let songID: string = "";
 
     if(!req.query || !req.query.songID) {
-    next(new Error("Room add: no song param"));
-    return;
+        next(new Error("Room add: no song param"));
+        return;
     }
 
     songID = req.query.songID as string

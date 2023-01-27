@@ -34,6 +34,7 @@ const CB_URI = process.env.CB_URI || "/callback";
 const SpotifyService = __importStar(require("../service/spotify-service"));
 const RoomService = __importStar(require("../service/room-service"));
 const string_utils_1 = require("../utils/string-utils");
+const room_utils_1 = require("../utils/room-utils");
 const router = (0, express_1.Router)();
 // logs path + IP address for every request
 router.use((req, res, next) => {
@@ -126,6 +127,9 @@ router.get("/spotify/host", (req, res, next) => {
         next(new Error("Spotify host: failed to find room param"));
     }
     room_number = req.query.room;
+    if (!(0, room_utils_1.IsValidRoomNumber)(room_number)) {
+        next(new Error("invalid room number"));
+    }
     if (!spotify_token) {
         next(new Error("no Spotify token found"));
     }
