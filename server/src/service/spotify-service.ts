@@ -25,8 +25,8 @@ type dataBearingObject = {
 
 function responseContainsData(response: any): response is dataBearingObject {
     if("data" in response) {
-        console.log("got data from Spotify:");
-        console.log(response.data);
+        // console.log("got data from Spotify:");
+        // console.log(response.data);
         return true;
     }
     else {
@@ -38,9 +38,6 @@ function responseContainsData(response: any): response is dataBearingObject {
 function shouldRefreshJukeboxToken(): boolean {
 
     let tokenExpiresIn: number = jbTokenExpiresAt - Date.now();
-
-    console.log("Jukebox token expires in (millseconds):");
-    console.log(tokenExpiresIn);
 
     // if token expires in 5 minutes or less
     if (tokenExpiresIn <= (5 * 60 * 1000)) {
@@ -67,7 +64,7 @@ function shouldRefreshUserToken(roomNum: string): boolean {
 // need to authenticate "Jukebox" using "Client Credentials" Spotify auth flow
 async function clientCredentials() {
 
-    console.log("refreshing Jukebox token...");
+    //console.log("refreshing Jukebox token...");
 
     const body = {
         grant_type: "client_credentials"
@@ -193,6 +190,7 @@ async function AuthorizeUser(authorization_code: string) {
 }
 
 async function GetUserInfo(user_token: string) {
+
     console.log("getting Spotify user info");
 
     const headers = {
