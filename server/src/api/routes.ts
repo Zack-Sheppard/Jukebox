@@ -145,7 +145,7 @@ router.get("/spotify/host", (req: Request,
         next(new Error("bad name param"));
     }
 
-    res.render("host", { room: room_number, name: screen_name });
+    res.render("thank-you", { room: room_number, name: screen_name });
 });
 
 router.use("/spotify/search",
