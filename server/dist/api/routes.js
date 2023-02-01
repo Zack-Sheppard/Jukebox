@@ -112,7 +112,7 @@ router.get(CB_URI, async (req, res, next) => {
         return;
     }
     // passed all checks, set some cookies
-    res.cookie("SpofityToken", tokens[0]);
+    res.cookie("SpofityToken", tokens[1]);
     res.cookie("ScreenName", screen_name);
     RoomService.SetTokens(room_num, tokens[0], tokens[1]);
     room_num = encodeURIComponent(room_num);
@@ -133,7 +133,7 @@ router.get("/spotify/host", (req, res, next) => {
     if (!spotify_token) {
         next(new Error("no Spotify token found"));
     }
-    if (spotify_token != RoomService.GetTokens(room_number)[0]) {
+    if (spotify_token != RoomService.GetTokens(room_number)[1]) {
         next(new Error("Spotify token mismatch"));
     }
     console.log("token matches internal room");
