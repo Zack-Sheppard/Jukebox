@@ -1,6 +1,9 @@
 
 ### git ignore ###
 
+# Mac auto gen
+**/.DS_Store
+
 # notes
 notes/
 
