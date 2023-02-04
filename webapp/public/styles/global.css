@@ -69,3 +69,103 @@ h1, h2, hr, p {
 #github-logo {
     margin: 5px 5px;
 }
+
+/*
+    Styles for header
+*/
+
+.hamburger-box{
+    z-index: 3;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    top: 5px;
+    left: 5px;
+    margin: auto;
+    margin-left: 2vw;
+    width: 40px;
+    height: 40px;
+    color: #B2E6F3;
+    font-size: 80px;
+    line-height: 0px;
+    user-select: none;
+}
+
+.hamburger-box:hover{
+    text-shadow: 0 0 6px #0FF;
+}
+
+.burger-top{
+    display: flex;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+}
+
+.burger-middle{
+    display: flex;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.burger-bottom{
+    display: flex;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    margin-left: 0;
+    margin-top: 0px;
+}
+
+/*
+    Drop down menu
+*/
+
+.drop-down-menu{
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    height: 50vh;
+    width: 100vw;
+    background-color: #333333;   
+    box-shadow: 0px 0px 4px 4px #333333;
+}
+
+
+.drop-down-button{
+    display: flex;
+    position: relative;
+    width: 190px;
+    height: fit-content;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: auto;
+    margin-top: 2vh;
+    background-color: #333333;
+    border: 3px solid;
+    border-color: #0FF;
+    border-radius: 10px;
+}
+
+.drop-down-button:hover{
+    text-shadow: 0 0 6px #0FF;
+    box-shadow: 0px 0px 4px 4px #0FF;
+}
+
+.center-text{
+    display: flex;
+    position: relative;
+    margin: auto;
+}
