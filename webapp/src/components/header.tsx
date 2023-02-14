@@ -32,19 +32,30 @@ export default class Header extends React.Component<HeaderProps,
   }
 
   render() {    
-    return (
-      
+    if(this.state.clicked == false){
+      return (
+        
+          <div id="header">
+            <h1><a href="/">Jukebox</a></h1>
+            <div className="hamburger-box" onClick={()=> this.toggleMenu(this.state.clicked)}>
+              <div className="burger-top">-</div>
+              <div className="burger-middle">-</div>
+              <div className="burger-bottom">-</div>
+            </div>
+          </div>
+          
+        
+      );
+    } else {
+      return (
         <div id="header">
           <h1><a href="/">Jukebox</a></h1>
           <div className="hamburger-box" onClick={()=> this.toggleMenu(this.state.clicked)}>
-            <div className="burger-top">-</div>
-            <div className="burger-middle">-</div>
-            <div className="burger-bottom">-</div>
+            <div className="burger-x">X</div>
           </div>
           <DropDownMenu menuState = {this.state.clicked}/>
         </div>
-        
-      
-    );
+      );
+    }
   }
 }
