@@ -169,3 +169,11 @@ h1, h2, hr, p {
     position: relative;
     margin: auto;
 }
+
+.burger-x{
+    display: flex;
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    font-size: 35px;
+}
