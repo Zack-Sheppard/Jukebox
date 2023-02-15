@@ -118,7 +118,7 @@ async function refreshUserToken(roomNum: string) {
         return resp.data.access_token;
     }
     else {
-        return null;
+        return "";
     }
 }
 
@@ -246,6 +246,11 @@ async function AddToQueue(songID: string, roomNum: string) {
     }
     else {
         user_token = GetTokens(roomNum)[0];
+    }
+
+    if(user_token == "") {
+        console.log("failed to refresh user token");
+        return { "result": "fail" }
     }
 
     const headers = {
