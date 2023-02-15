@@ -4,7 +4,7 @@
 "use strict";
 
 import * as React from "react";
-import {DropDownMenu} from './DropDownMenu';
+import { DropdownMenu } from './dropdown-menu';
 
 interface HeaderProps {
   host: boolean
@@ -24,7 +24,8 @@ export default class Header extends React.Component<HeaderProps,
       this.setState({
         clicked: true,
       });
-    } else {
+    }
+    else {
       this.setState({
         clicked: false,
       });
@@ -34,26 +35,28 @@ export default class Header extends React.Component<HeaderProps,
   render() {    
     if(this.state.clicked == false){
       return (
-        
-          <div id="header">
-            <h1><a href="/">Jukebox</a></h1>
-            <div className="hamburger-box" onClick={()=> this.toggleMenu(this.state.clicked)}>
-              <div className="burger-top">-</div>
-              <div className="burger-middle">-</div>
-              <div className="burger-bottom">-</div>
-            </div>
-          </div>
-          
-        
-      );
-    } else {
-      return (
         <div id="header">
           <h1><a href="/">Jukebox</a></h1>
-          <div className="hamburger-box" onClick={()=> this.toggleMenu(this.state.clicked)}>
+          <div className="hamburger-box"
+               onClick={() => this.toggleMenu(this.state.clicked)}>
+            <div className="burger-top">-</div>
+            <div className="burger-middle">-</div>
+            <div className="burger-bottom">-</div>
+          </div>
+        </div>
+      );
+    }
+    else {
+      return (
+        <div id="header">
+          <h1>
+            <a href="/">Jukebox</a>
+          </h1>
+          <div className="hamburger-box"
+               onClick={() => this.toggleMenu(this.state.clicked)}>
             <div className="burger-x">X</div>
           </div>
-          <DropDownMenu menuState = {this.state.clicked}/>
+          <DropdownMenu menuState = {this.state.clicked}/>
         </div>
       );
     }
