@@ -71,69 +71,61 @@ h1, h2, hr, p {
 }
 
 /*
-    Styles for header
+    Styles for burger
 */
 
-.hamburger-box{
-    z-index: 3;
-    display: flex;
+.hamburger-box {
+    display: inline-block;
     position: absolute;
-    flex-direction: column;
-    top: 5px;
     left: 5px;
-    margin: auto;
-    margin-left: 2vw;
+    top: 5px;
     width: 40px;
     height: 40px;
     color: #B2E6F3;
-    font-size: 80px;
-    line-height: 0px;
+    font-size: 60px;
     user-select: none;
+    z-index: 3;
 }
 
-.hamburger-box:hover{
+.hamburger-box:hover {
     text-shadow: 0 0 6px #0FF;
 }
 
-.burger-top{
-    display: flex;
-    position: relative;
-    width: fit-content;
-    height: fit-content;
-    margin: auto;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    margin-right: 0px;
+#burger-top {
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: -55px;
 }
 
-.burger-middle{
-    display: flex;
-    position: relative;
-    width: fit-content;
-    height: fit-content;
-    margin: auto;
-    margin-top: 0px;
-    margin-bottom: 10px;
+#burger-mid {
+    display: block;
+    position: absolute;
+    left: 11px;
+    top: -45px;
 }
 
-.burger-bottom{
-    display: flex;
-    position: relative;
-    width: fit-content;
-    height: fit-content;
-    margin: auto;
-    margin-left: 0;
-    margin-top: 0px;
+#burger-bot {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: -35px;
+}
+
+#burger-x {
+    display: block;
+    position: absolute;
+    font-size: 32px;
+    font-weight: bold;
+    left: 12px;
 }
 
 /*
-    Drop down menu
+    Dropdown menu
 */
 
-.drop-down-menu{
+.dropdown-menu {
     z-index: 1;
-    display: flex;
-    flex-direction: column;
     position: absolute;
     top: 50px;
     left: 0px;
@@ -143,9 +135,7 @@ h1, h2, hr, p {
     box-shadow: 0px 0px 4px 4px #333333;
 }
 
-
-.drop-down-button{
-    display: flex;
+.dropdown-button {
     position: relative;
     width: 190px;
     height: fit-content;
@@ -159,21 +149,12 @@ h1, h2, hr, p {
     border-radius: 10px;
 }
 
-.drop-down-button:hover{
+.dropdown-button:hover {
     text-shadow: 0 0 6px #0FF;
     box-shadow: 0px 0px 4px 4px #0FF;
 }
 
-.center-text{
-    display: flex;
+.center-text {
     position: relative;
     margin: auto;
-}
-
-.burger-x{
-    display: flex;
-    position: absolute;
-    top: 15px;
-    left: 10px;
-    font-size: 35px;
 }

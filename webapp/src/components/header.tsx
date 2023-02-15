@@ -4,7 +4,7 @@
 "use strict";
 
 import * as React from "react";
-import { DropdownMenu } from './dropdown-menu';
+import { DropdownMenu } from "./dropdown-menu";
 
 interface HeaderProps {
   host: boolean
@@ -36,12 +36,14 @@ export default class Header extends React.Component<HeaderProps,
     if(this.state.clicked == false){
       return (
         <div id="header">
-          <h1><a href="/">Jukebox</a></h1>
+          <h1>
+            <a href="/">Jukebox</a>
+          </h1>
           <div className="hamburger-box"
                onClick={() => this.toggleMenu(this.state.clicked)}>
-            <div className="burger-top">-</div>
-            <div className="burger-middle">-</div>
-            <div className="burger-bottom">-</div>
+            <div id="burger-top">_</div>
+            <div id="burger-mid">_</div>
+            <div id="burger-bot">_</div>
           </div>
         </div>
       );
@@ -54,7 +56,7 @@ export default class Header extends React.Component<HeaderProps,
           </h1>
           <div className="hamburger-box"
                onClick={() => this.toggleMenu(this.state.clicked)}>
-            <div className="burger-x">X</div>
+            <div id="burger-x">X</div>
           </div>
           <DropdownMenu menuState = {this.state.clicked}/>
         </div>

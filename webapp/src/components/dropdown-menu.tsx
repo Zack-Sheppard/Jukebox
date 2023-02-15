@@ -22,17 +22,17 @@ export class DropdownMenu extends React.Component<DropdownProps>{
 
   render(){
     return(
-      <div className="drop-down-menu">
-        <div className="drop-down-button">
+      <div className="dropdown-menu">
+        <div className="dropdown-button">
           <h1 className ="center-text">Account Info</h1>
         </div>
-        <div className="drop-down-button">
+        <div className="dropdown-button">
           <h1 className ="center-text">About Us</h1>
         </div>
-        <div className ="drop-down-button">
+        <div className ="dropdown-button">
           <h1 className ="center-text">Tutorial</h1>
         </div>
-        <div className="drop-down-button"
+        <div className="dropdown-button"
              onClick ={() => this.newTab(DISCORD_LINK)}
         >
           <h1 className ="center-text">Discord</h1>
