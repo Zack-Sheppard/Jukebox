@@ -24,19 +24,17 @@ export class DropdownMenu extends React.Component<DropdownProps>{
     return(
       <div className="dropdown-menu">
         <div className="dropdown-button">
-          <h1 className ="center-text">Account Info</h1>
-        </div>
-        <div className="dropdown-button">
           <h1 className ="center-text">About Us</h1>
-        </div>
-        <div className ="dropdown-button">
-          <h1 className ="center-text">Tutorial</h1>
         </div>
         <div className="dropdown-button"
              onClick ={() => this.newTab(DISCORD_LINK)}
         >
           <h1 className ="center-text">Discord</h1>
         </div>
+        <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer">
+          <img id="discord-logo" src="../img/discord-logo-blue.png"/>
+        </a>
+        <h1 className ="center-text">Version 0.0.5</h1>
       </div>
     );
   }

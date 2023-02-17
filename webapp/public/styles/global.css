@@ -118,6 +118,7 @@ h1, h2, hr, p {
     font-size: 32px;
     font-weight: bold;
     left: 12px;
+    top: -1px;
 }
 
 /*
@@ -125,36 +126,40 @@ h1, h2, hr, p {
 */
 
 .dropdown-menu {
-    z-index: 1;
+    background-color: #333333;   
+    box-shadow: 0px 0px 4px 4px #333333;
+    color: aliceblue;
+    font-family: "Mandali", sans-serif;
+    font-size: 20px;
+    padding-top: 20px;
     position: absolute;
     top: 50px;
     left: 0px;
-    height: 50vh;
-    width: 100vw;
-    background-color: #333333;   
-    box-shadow: 0px 0px 4px 4px #333333;
+    height: 50%;
+    width: 100%;
+    z-index: 1;
+}
+
+.dropdown-menu h1 {
+    font-size: 24px;
 }
 
 .dropdown-button {
     position: relative;
-    width: 190px;
-    height: fit-content;
-    padding-left: 20px;
-    padding-right: 20px;
+    width: 150px;
+    padding: 4px 12px;
     margin: auto;
-    margin-top: 2vh;
-    background-color: #333333;
-    border: 3px solid;
-    border-color: #0FF;
+    margin-top: 18px;
+    background-color: #7D84B2;
     border-radius: 10px;
-}
-
-.dropdown-button:hover {
-    text-shadow: 0 0 6px #0FF;
-    box-shadow: 0px 0px 4px 4px #0FF;
 }
 
 .center-text {
     position: relative;
     margin: auto;
+}
+
+#discord-logo {
+    margin-top: 20px;
+    max-width: 170px;
 }
