@@ -38,7 +38,13 @@ h1, h2, hr, p {
     text-shadow: 0 0 3px #B2E6F3;
 }
 
-#header:hover {
+#header-logo {
+    display: block;
+    margin: auto;
+    width: 200px;
+}
+
+#header-logo:hover {
     text-shadow: 0 0 6px #0FF;
 }
 
@@ -133,6 +139,7 @@ h1, h2, hr, p {
     font-size: 20px;
     padding-top: 20px;
     position: absolute;
+    text-shadow: none;
     top: 50px;
     left: 0px;
     height: 50%;

@@ -36,7 +36,7 @@ export default class Header extends React.Component<HeaderProps,
     if(this.state.clicked == false){
       return (
         <div id="header">
-          <h1>
+          <h1 id="header-logo">
             <a href="/">Jukebox</a>
           </h1>
           <div className="hamburger-box"
@@ -51,7 +51,7 @@ export default class Header extends React.Component<HeaderProps,
     else {
       return (
         <div id="header">
-          <h1>
+          <h1 id="header-logo">
             <a href="/">Jukebox</a>
           </h1>
           <div className="hamburger-box"
