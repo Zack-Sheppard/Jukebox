@@ -153,10 +153,10 @@ h1, h2, hr, p {
 
 .dropdown-button {
     position: relative;
-    width: 150px;
-    padding: 4px 12px;
+    width: 165px;
+    padding: 3px 12px 6px 12px;
     margin: auto;
-    margin-top: 18px;
+    margin-top: 16px;
     background-color: #7D84B2;
     border-radius: 10px;
 }
@@ -167,6 +167,12 @@ h1, h2, hr, p {
 }
 
 #discord-logo {
-    margin-top: 20px;
+    margin: 12px 0px -3px 0px;
+    max-height: 26px;
     max-width: 170px;
+}
+
+#version {
+    margin-top: 12px;
+    font-size: 14px;
 }

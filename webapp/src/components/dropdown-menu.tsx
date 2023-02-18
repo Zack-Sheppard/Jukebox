@@ -31,10 +31,12 @@ export class DropdownMenu extends React.Component<DropdownProps>{
         >
           <h1 className ="center-text">Discord</h1>
         </div>
-        <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer">
-          <img id="discord-logo" src="../img/discord-logo-blue.png"/>
-        </a>
-        <h1 className ="center-text">Version 0.0.5</h1>
+        <div className="dropdown-button">
+          <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer">
+            <img id="discord-logo" src="../img/discord-logo-white.png"/>
+          </a>
+        </div>
+        <h1 id="version" className ="center-text">Version 0.0.5</h1>
       </div>
     );
   }
