@@ -142,7 +142,7 @@ h1, h2, hr, p {
     text-shadow: none;
     top: 50px;
     left: 0px;
-    height: 50%;
+    height: 300px;
     width: 100%;
     z-index: 1;
 }
@@ -164,6 +164,10 @@ h1, h2, hr, p {
 .center-text {
     position: relative;
     margin: auto;
+}
+
+#discord-container {
+    background-color: #5865F2;
 }
 
 #discord-logo {
