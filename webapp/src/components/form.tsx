@@ -73,7 +73,7 @@ export default class Form extends React.Component<FormProps, {value: string}> {
 
   render() {
     return (
-      <div className="form">  
+      <form className="form" onSubmit={this.handleSubmit}>  
         <div className="form-input">
           <input id="test"
             type="text"
@@ -89,7 +89,7 @@ export default class Form extends React.Component<FormProps, {value: string}> {
             enabled={true}
           />
         </div>
-      </div>
+      </form>
     );
   }
 }

@@ -115,7 +115,7 @@ async function refreshUserToken(roomNum) {
         return resp.data.access_token;
     }
     else {
-        return null;
+        return "";
     }
 }
 // Spotify authorization code should be at least 128 chars,
@@ -220,6 +220,10 @@ async function AddToQueue(songID, roomNum) {
     }
     else {
         user_token = (0, room_service_1.GetTokens)(roomNum)[0];
+    }
+    if (user_token == "") {
+        console.log("failed to refresh user token");
+        return { "result": "fail" };
     }
     const headers = {
         "Authorization": `Bearer ${user_token}`,
