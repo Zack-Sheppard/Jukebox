@@ -8,6 +8,7 @@
 }
 
 #room-num {
+    color: #333333;
     font-size: 20px;
     top: 62px;
     left: 22px;
@@ -35,6 +36,7 @@
 }
 
 .form input {
+    font-family: "Mandali", sans-serif;
     font-size: 20px;
     height: 40px;
     margin: auto;
@@ -44,15 +46,7 @@
 }
 
 .form {
-    display: block;
-    font-size: 20px;
-    position: relative;
     text-align: center;
-}
-
-.form-input {
-    display: block;
-    margin: auto;
 }
 
 button {
@@ -60,6 +54,7 @@ button {
     border: none;
     border-radius: 10px;
     box-shadow: 0 0 16px 0 #B2E6F3;
+    color: #333333;
     display: block;
     font-family: "Mandali", sans-serif;
     font-size: 18px;
