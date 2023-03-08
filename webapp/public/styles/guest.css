@@ -2,27 +2,19 @@
 #guest {
     margin: auto;
     position: relative;
-    padding-top: 20px;
     height: calc(100% - 20px);
     width: 100%;
 }
 
 #room-num {
     color: #333333;
-    font-size: 20px;
-    top: 62px;
-    left: 22px;
-    position: absolute;
+    font-size: 24px;
+    padding: 20px 0px 8px 0px;
     text-align: center;
 }
 
-#room-num p {
-    margin-block-end: -18px;
-}
-
 #root {
-    margin-top: 60px;
-    height: calc(100% - 360px); /* 100% – (header+logo+footer) - 60px */
+    height: calc(100% - 375px); /* 100% – (head/foot + logo + room #) */
 }
 
 #logo {
@@ -60,11 +52,6 @@ button {
     font-size: 18px;
     margin: auto;
     padding: 4px 12px;
-}
-
-p {
-    margin-block-start: 0;
-    margin-block-end: 0;
 }
 
 table {
