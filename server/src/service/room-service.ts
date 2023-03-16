@@ -9,17 +9,14 @@ import path from "path";
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, "../../.env") });
 
-const CA_0_EMAIL: string = process.env.CA_0_EMAIL || "";
-const CA_0_ROOM: string = "999";
+const CA_00: string = process.env.CA_0_EMAIL || "";
+const CA_01: string = process.env.CA_1_EMAIL || "";
+const CA_02: string = process.env.CA_2_EMAIL || "";
+const CA_03: string = process.env.CA_3_EMAIL || "";
+const CA_04: string = process.env.CA_4_EMAIL || "";
 
-const CA_1_EMAIL: string = process.env.CA_1_EMAIL || "";
-const CA_1_ROOM: string = "715";
-
-const CA_2_EMAIL: string = process.env.CA_2_EMAIL || "";
-const CA_2_ROOM: string = "210";
-
-const CA_3_EMAIL: string = process.env.CA_3_EMAIL || "";
-const CA_3_ROOM: string = "081";
+const CA_EMAIL: string[] = [CA_00, CA_01, CA_02, CA_03, CA_04];
+const CA_ROOMS: string[] = ["999", "715", "210", "081", "414"];
 
 interface ClosedAlphaUser {
     email: string,
@@ -31,18 +28,15 @@ const closed_alpha: ClosedAlphaUser[] = [];
 function init() {
 
     // get closed alpha users info
-    if(CA_0_EMAIL == "" ||  CA_1_EMAIL == "" || CA_2_EMAIL == "" || 
-       CA_3_EMAIL == "" ) {
-        console.log("Error reading configs:");
-        process.exit();
+    for(let i = 0; i < CA_EMAIL.length; i++) {
+        if(CA_EMAIL[i] == "" || !CA_ROOMS[i]) {
+            console.log("Error reading configs: missing user/room", i);
+            process.exit();
+        }
+        closed_alpha[i] = { "email": CA_EMAIL[i], "room": CA_ROOMS[i] };
     }
 
-    closed_alpha[0] = { "email": CA_0_EMAIL, "room": CA_0_ROOM };
-    closed_alpha[1] = { "email": CA_1_EMAIL, "room": CA_1_ROOM };
-    closed_alpha[2] = { "email": CA_2_EMAIL, "room": CA_2_ROOM };
-    closed_alpha[3] = { "email": CA_3_EMAIL, "room": CA_3_ROOM };
-
-    console.log("Closed alpha config contents:");
+    console.log("Closed alpha users:");
     for(let i = 0; i < closed_alpha.length; i++) {
         console.log(closed_alpha[i]);
     }

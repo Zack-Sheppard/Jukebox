@@ -33,27 +33,24 @@ const rooms = [];
 const path_1 = __importDefault(require("path"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: path_1.default.join(__dirname, "../../.env") });
-const CA_0_EMAIL = process.env.CA_0_EMAIL || "";
-const CA_0_ROOM = "999";
-const CA_1_EMAIL = process.env.CA_1_EMAIL || "";
-const CA_1_ROOM = "715";
-const CA_2_EMAIL = process.env.CA_2_EMAIL || "";
-const CA_2_ROOM = "210";
-const CA_3_EMAIL = process.env.CA_3_EMAIL || "";
-const CA_3_ROOM = "081";
+const CA_00 = process.env.CA_0_EMAIL || "";
+const CA_01 = process.env.CA_1_EMAIL || "";
+const CA_02 = process.env.CA_2_EMAIL || "";
+const CA_03 = process.env.CA_3_EMAIL || "";
+const CA_04 = process.env.CA_4_EMAIL || "";
+const CA_EMAIL = [CA_00, CA_01, CA_02, CA_03, CA_04];
+const CA_ROOMS = ["999", "715", "210", "081", "414"];
 const closed_alpha = [];
 function init() {
     // get closed alpha users info
-    if (CA_0_EMAIL == "" || CA_1_EMAIL == "" || CA_2_EMAIL == "" ||
-        CA_3_EMAIL == "") {
-        console.log("Error reading configs:");
-        process.exit();
+    for (let i = 0; i < CA_EMAIL.length; i++) {
+        if (CA_EMAIL[i] == "" || !CA_ROOMS[i]) {
+            console.log("Error reading configs: missing user/room", i);
+            process.exit();
+        }
+        closed_alpha[i] = { "email": CA_EMAIL[i], "room": CA_ROOMS[i] };
     }
-    closed_alpha[0] = { "email": CA_0_EMAIL, "room": CA_0_ROOM };
-    closed_alpha[1] = { "email": CA_1_EMAIL, "room": CA_1_ROOM };
-    closed_alpha[2] = { "email": CA_2_EMAIL, "room": CA_2_ROOM };
-    closed_alpha[3] = { "email": CA_3_EMAIL, "room": CA_3_ROOM };
-    console.log("Closed alpha config contents:");
+    console.log("Closed alpha users:");
     for (let i = 0; i < closed_alpha.length; i++) {
         console.log(closed_alpha[i]);
     }
