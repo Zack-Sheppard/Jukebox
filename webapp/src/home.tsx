@@ -7,38 +7,57 @@ import {} from "react/next";
 
 import Header from "./components/header";
 import Button from "./components/button";
+import Form from "./components/form";
 
-function Greeting(props: any) {
-  const isClicked: boolean = props.isClicked;
-  const onClick: Function = props.onClick;
-  if(isClicked) {
+function JoinRoomForm(props: any) {
+  const displayForm: boolean = props.show;
+  const formAction: any = props.onClick;
+
+  if(displayForm) {
     return (
-      <p>coming soon ...</p>
-    );
-  }
-  else {
-    return (
-      <Button
-        enabled={true}
-        onClick={onClick}
-        text="Click me!"
-        type="button"
+      <Form
+        name="room"
+        maxLength={3}
+        placeholder="Room Code"
+        onResponse={formAction}
+        uri="/room"
       />
     );
   }
 }
 
-class Home extends React.Component<{}, {clicked: boolean}> {
+function JoinRoom(input: string) {
+  // convert input to number string xyz
+  // redirect to /room/xyz
+}
+
+function validateRoomCode() {
+
+}
+
+class Home extends React.Component<{}, {joinClicked: boolean}> {
   constructor(props: any) {
     super(props);
-    this.state = { clicked: false };
-    this.handleClick = this.handleClick.bind(this);
+    this.state = { joinClicked: false };
+    this.showForm = this.showForm.bind(this);
   }
 
-  handleClick() {
+  createRoom() {
+    // perhaps modal warning that they must be signed up
+    // - option to sign up :)
+    console.log("attempting to create room ...");
+    window.location.href="/ca/create";
+  }
+
+  showForm() {
+    console.log("showing join room form...");
     this.setState({
-      clicked: true
+      joinClicked: true
     });
+  }
+
+  joinRoom() {
+    // TODO
   }
 
   render() {
@@ -47,11 +66,27 @@ class Home extends React.Component<{}, {clicked: boolean}> {
         <Header
           host={false}
         />
-        <div id="greeting">
-          <Greeting
-            isClicked={this.state.clicked}
-            onClick={this.handleClick}
+        <div id="create-join">
+          <Button
+            enabled={true}
+            host={true}
+            onClick={this.createRoom}
+            text="Create"
+            type="button"
           />
+          <div id="join">
+            <Button
+              enabled={false}
+              host={false}
+              onClick={this.showForm}
+              text="Join"
+              type="button"
+            />
+            <JoinRoomForm
+              show={this.state.joinClicked}
+              onClick={this.joinRoom}
+            />
+          </div>
         </div>
       </div>
     );
