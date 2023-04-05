@@ -87,6 +87,7 @@ export default class Form extends React.Component<FormProps, {value: string}> {
             text="Go"
             onClick={this.handleSubmit}
             enabled={true}
+            host={false}
           />
         </div>
       </form>

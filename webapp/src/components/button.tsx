@@ -6,9 +6,10 @@
 import * as React from "react";
 
 interface ButtonProps {
-  type: any,
+  type: "button" | "reset" | "submit",
   onClick: any,
   enabled: boolean,
+  host: boolean,
   text: string
 }
 
@@ -21,9 +22,13 @@ export default class Button extends React.Component<ButtonProps,
     };
   }
 
-  render() {    
+  render() {
+    let klassName = "button";
+    if(this.props.host) {
+      klassName += "--host";
+    }
     return (
-      <button className="button"
+      <button className={klassName}
         type={this.props.type} // type="button", "reset", or "submit"
         onClick={this.props.onClick}
         disabled={!this.props.enabled}
