@@ -14,7 +14,7 @@
 }
 
 #root {
-    height: calc(100% - 375px); /* 100% – (head/foot + logo + room #) */
+    height: calc(100% - 250px); /* 100% – (head/foot + logo + room #) */
 }
 
 #logo {
@@ -93,7 +93,7 @@ tr:nth-child(odd) {
     position: relative;
     height: calc(100% - 70px);
     width: 295px;
-    z-index: 2;
+    z-index: 1;
 }
 
 table img {

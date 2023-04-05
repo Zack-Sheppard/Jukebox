@@ -5,6 +5,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {} from "react/next";
 
+import Header from "./components/header";
 import Form from "./components/form";
 
 const url: string = window.location.href;
@@ -161,6 +162,12 @@ class Guest extends React.Component<{},
   render() {
     return (
     <div id="guest">
+      <Header
+        host={false}
+      />
+      <div id="room-num">
+        <p>Room {room_number}</p>
+      </div>
       <Form
         name="song"
         maxLength={48}

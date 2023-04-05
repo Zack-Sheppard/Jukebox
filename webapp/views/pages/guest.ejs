@@ -2,7 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Jukebox</title>
+  <% if(typeof(num) != "undefined") { %>
+    <title>Jukebox | Room <%= num %></title>
+  <% } else { %>
+    <title>Jukebox</title>
+  <% } %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
   <link rel="stylesheet" href="../styles/global.css">
@@ -10,14 +14,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner&family=Mandali">
 </head>
 <body>
-
-<%- include("../pieces/header"); -%>
-
-<% if (num) { %>
-  <div id="room-num">
-    <p>Room <%= num %></p>
-  </div>
-<% } %>
 
 <div id="root"></div>
 
