@@ -195,7 +195,7 @@ h1, h2, hr, p {
     background-color: rgb(197, 197, 197);
     width: 80vw;
     height: 80vw;
-    max-width: 80vh;
+    max-width: 80vh; /*max size to prevent overflow*/
     max-height: 80vh;
     margin: auto;
     margin-top: 10vh;
