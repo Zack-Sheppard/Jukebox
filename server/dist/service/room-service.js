@@ -38,8 +38,9 @@ const CA_01 = process.env.CA_1_EMAIL || "";
 const CA_02 = process.env.CA_2_EMAIL || "";
 const CA_03 = process.env.CA_3_EMAIL || "";
 const CA_04 = process.env.CA_4_EMAIL || "";
-const CA_EMAIL = [CA_00, CA_01, CA_02, CA_03, CA_04];
-const CA_ROOMS = ["999", "715", "210", "081", "414"];
+const CA_05 = process.env.CA_5_EMAIL || "";
+const CA_EMAIL = [CA_00, CA_01, CA_02, CA_03, CA_04, CA_05];
+const CA_ROOMS = ["999", "715", "210", "081", "414", "206"];
 const closed_alpha = [];
 function init() {
     // get closed alpha users info
