@@ -180,3 +180,38 @@ h1, h2, hr, p {
     margin-top: 12px;
     font-size: 14px;
 }
+
+.modal-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7)
+  }
+
+.modal{
+    position: relative;
+    background-color: rgb(197, 197, 197);
+    width: 80vw;
+    height: 80vw;
+    max-width: 80vh;
+    max-height: 80vh;
+    margin: auto;
+    margin-top: 10vh;
+  }
+
+.modal-exit{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
+    font-weight: lighter;
+    font-style: italic;
+    color: rgb(255, 0, 13);
+    text-align: center;
+}
+
+
