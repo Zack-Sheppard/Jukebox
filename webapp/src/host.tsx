@@ -10,8 +10,8 @@ import Button from "./components/button";
 import Form from "./components/form";
 
 const url: string = window.location.href;
-const roomUrlPos: number = url.indexOf("?room=");
-const roomNumber: string = url.substring(roomUrlPos + 6, roomUrlPos + 9);
+const urlSearchParams = new URLSearchParams(window.location.search);
+const roomNumber: string = urlSearchParams.get("room");
 
 class SpotifyTrack {
   trackName: string;
