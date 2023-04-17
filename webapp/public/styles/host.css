@@ -1,0 +1,12 @@
+
+#room-num p, #room-num button {
+    display: inline;
+    padding: 0px 8px;
+    vertical-align: middle;
+}
+
+/* move to global */
+.button--host {
+    background-color: #EDD86D;
+    box-shadow: 0 0 16px 0 #F1C75A;
+}
