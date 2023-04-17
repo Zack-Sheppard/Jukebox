@@ -1,6 +1,7 @@
 
 #room-num p, #room-num button {
     display: inline;
+    font-size: 24px;
     padding: 0px 8px;
     vertical-align: middle;
 }

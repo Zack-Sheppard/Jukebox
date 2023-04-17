@@ -10,9 +10,8 @@ import Button from "./components/button";
 import Form from "./components/form";
 
 const url: string = window.location.href;
-
-// perhaps better is find the "room="
-const room_number: string = url.slice(-3);
+const roomUrlPos: number = url.indexOf("?room=");
+const roomNumber: string = url.substring(roomUrlPos + 6, roomUrlPos + 9);
 
 class SpotifyTrack {
   trackName: string;
@@ -152,7 +151,7 @@ class Host extends React.Component<{},
       searching: false
     }));
     console.log("adding to queue: " + track.trackName);
-    fetch(`/room/${room_number}/add?songID=${track.spotifyID}`)
+    fetch(`/room/${roomNumber}/add?songID=${track.spotifyID}`)
     .then(response => {
       if(!response.ok) {
         throw new Error("bad network response");
@@ -180,7 +179,7 @@ class Host extends React.Component<{},
           enabled={true}
           host={true}
           onClick={this.copyInviteLink}
-          text={room_number}
+          text={roomNumber}
           type="button"
         />
       </div>
