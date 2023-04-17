@@ -78,6 +78,7 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
     let user_info = await SpotifyService.GetUserInfo(tokens[0]);
 
     if(!user_info) {
+        // 1/2
         next(new Error("Spotify: failed to get user info"));
         return;
     }
@@ -99,6 +100,7 @@ router.get(CB_URI, async (req: Request, res: Response, next: NextFunction) => {
     let room_num: string = RoomService.FindRoomNumber(email);
 
     if(room_num == "") {
+        // 2/2
         next(new Error("Room Service: failed to find user room"));
         return;
     }
@@ -128,24 +130,31 @@ router.get("/spotify/host", (req: Request,
 
     room_number = req.query.room as string;
     if(!IsValidRoomNumber(room_number)) {
-        next(new Error("invalid room number"));
+        next(new Error("Spotify host: invalid room number"));
     }
 
     if(!spotify_token) {
-        next(new Error("no Spotify token found"));
+        next(new Error("Spotify host: no Spotify token found"));
     }
 
-    if(spotify_token != RoomService.GetTokens(room_number)[1]) {
-        next(new Error("Spotify token mismatch"));
+    let room_token: string = RoomService.GetTokens(room_number)[1];
+
+    if(room_token == "") {
+        res.redirect("/ca/create");
+    }
+
+    if(spotify_token != room_token) {
+        console.log("new token who dis");
+        res.redirect("/ca/create");
     }
 
     console.log("token matches internal room");
 
     if(screen_name.length > 32) { // potentially malicious? Spotify caps at 30
-        next(new Error("bad name param"));
+        next(new Error("Spotify host: bad name param"));
     }
 
-    res.render("thank-you", { room: room_number, name: screen_name });
+    res.render("host", { num: room_number, name: screen_name });
 });
 
 router.use("/spotify/search",
