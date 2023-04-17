@@ -68,7 +68,7 @@ export class DropdownMenu extends React.Component<DropdownProps,
             />
           </a>
         </div>
-        <h1 id="version" className ="center-text">Version 0.0.7</h1>
+        <h1 id="version" className ="center-text">Version 0.0.8</h1>
       </div>
     );
   }
