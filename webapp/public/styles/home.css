@@ -4,6 +4,7 @@ button {
     border: none;
     border-radius: 10px;
     box-shadow: 0 0 16px 0 #B2E6F3;
+    color: #333333;
     display: block;
     font-family: "Mandali", sans-serif;
     font-size: 24px;
@@ -39,8 +40,6 @@ button[disabled] {
 }
 
 #create-join {
-    color: #222222;
-    font-size: 24px;
     margin-top: 100px;
     padding: 12px 16px;
     text-align: center;
