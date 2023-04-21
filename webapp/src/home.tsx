@@ -8,56 +8,53 @@ import {} from "react/next";
 import Header from "./components/header";
 import Button from "./components/button";
 import Form from "./components/form";
+import Modal from "./components/modal";
 
-function JoinRoomForm(props: any) {
-  const displayForm: boolean = props.show;
-  const formAction: any = props.onClick;
-
-  if(displayForm) {
-    return (
-      <Form
-        name="room"
-        maxLength={3}
-        placeholder="Room Code"
-        onResponse={formAction}
-        uri="/room"
-      />
-    );
-  }
+interface HomeState {
+  roomToJoin: string;
+  joinToggle: boolean;
 }
 
-function JoinRoom(input: string) {
-  // convert input to number string xyz
-  // redirect to /room/xyz
-}
-
-function validateRoomCode() {
-
-}
-
-class Home extends React.Component<{}, {joinClicked: boolean}> {
+class Home extends React.Component<{}, HomeState> {
   constructor(props: any) {
     super(props);
-    this.state = { joinClicked: false };
-    this.showForm = this.showForm.bind(this);
+    this.state = {
+      roomToJoin: "",
+      joinToggle: false
+    }
+    this.showModal = this.showModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   createRoom() {
-    // perhaps modal warning that they must be signed up
-    // - option to sign up :)
     console.log("attempting to create room ...");
     window.location.href="/ca/create";
   }
 
-  showForm() {
-    console.log("showing join room form...");
+  showModal() {
+    console.log("showing join room modal...");
     this.setState({
-      joinClicked: true
+      joinToggle: true
     });
   }
 
-  joinRoom() {
-    // TODO
+  joinRoom(res: any) {
+    let room_to_join: string = "000";
+    if(res.result == "ok" && res.room_to_join) {
+      room_to_join = res.room_to_join;
+      console.log("joining room " + room_to_join);
+      window.location.href = "/room/" + room_to_join;
+    }
+    else {
+      console.log("something isn't right...");
+    }
+  }
+
+  closeModal() {
+    console.log("closing join room modal...");
+    this.setState({
+      joinToggle: false
+    });
   }
 
   render() {
@@ -76,16 +73,25 @@ class Home extends React.Component<{}, {joinClicked: boolean}> {
           />
           <div id="join">
             <Button
-              enabled={false}
+              enabled={true}
               host={false}
-              onClick={this.showForm}
+              onClick={this.showModal}
               text="Join"
               type="button"
             />
-            <JoinRoomForm
-              show={this.state.joinClicked}
-              onClick={this.joinRoom}
-            />
+            <Modal
+              title={"Join Room"}
+              show={this.state.joinToggle}
+              handleClose={this.closeModal}
+            >
+              <Form
+                name="room"
+                maxLength={3}
+                placeholder="Room Code"
+                onResponse={this.joinRoom}
+                uri="/room"
+              />
+            </Modal>
           </div>
         </div>
       </div>
