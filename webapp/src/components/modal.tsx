@@ -1,27 +1,42 @@
-// modal
+
+// Modal
 
 "use strict";
 
 import * as React from "react";
 
-interface ModalProps{
-    display: boolean;
+interface ModalProps {
+  children: any;
+  title: string;
+  show: boolean;
+  handleClose: any;
 }
 
-export default class Modal extends React.Component<ModalProps>{
+export default class Modal extends React.Component<ModalProps> {
+  constructor(props: ModalProps) {
+    super(props);
+  }
 
-
-    render(){
-        if(this.props.display === true){
-            return(
-                <div className='modal-container'>
-                    <div className='modal'>
-                    <div className='modal-exit'> {/*Add on click to close*/}
-                        <div className="center-text">X</div>
-                    </div>
-                    </div>
-                </div>
-            )
-        }
+  render(){
+    if(this.props.show){
+      return(
+        <div className="modal-container">
+          <div className="modal">
+            <div className="modal-title">
+              {this.props.title} 
+            </div>
+            <div className="modal-content">
+              {this.props.children}
+            </div>
+            <div className="modal-exit" onClick={this.props.handleClose}>
+              x
+            </div>
+          </div>
+        </div>
+      );
     }
+    else {
+      return null;
+    }
+  }
 }
