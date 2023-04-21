@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GenerateRandomAlphanumericString = void 0;
+exports.IsAlphanumericString = exports.GenerateRandomAlphanumericString = void 0;
 // does what it says on the can
 function GenerateRandomAlphanumericString(length) {
     let result = "";
@@ -14,3 +14,13 @@ function GenerateRandomAlphanumericString(length) {
     return result;
 }
 exports.GenerateRandomAlphanumericString = GenerateRandomAlphanumericString;
+// only for strings of length 128 or less
+function IsAlphanumericString(s) {
+    if (/^[A-Za-z0-9]{1,128}/.test(s)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+exports.IsAlphanumericString = IsAlphanumericString;

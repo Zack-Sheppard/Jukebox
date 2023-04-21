@@ -13,4 +13,14 @@ function GenerateRandomAlphanumericString(length: number): string {
     return result;
 }
 
-export { GenerateRandomAlphanumericString };
+// only for strings of length 128 or less
+function IsAlphanumericString(s: string): boolean {
+    if(/^[A-Za-z0-9]{1,128}/.test(s)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+export { GenerateRandomAlphanumericString, IsAlphanumericString };
