@@ -7,8 +7,8 @@ const CB_URI: string = process.env.CB_URI || "/callback";
 
 import * as SpotifyService from "../service/spotify-service";
 import * as RoomService from "../service/room-service";
-import { GenerateRandomAlphanumericString } from "../utils/string-utils";
-import { IsValidRoomNumber } from "../utils/room-utils";
+import * as StringUtils from "../utils/string-utils";
+import * as RoomUtils from "../utils/room-utils";
 
 const router = Router();
 
@@ -24,6 +24,49 @@ router.get("/", (req: Request, res: Response) => {
     res.render("home");
 });
 
+router.use("/room",
+    urlencoded({
+        extended: true
+    })
+);
+
+router.post(/\/room$/, (req: Request, res: Response, next: NextFunction) => {
+
+    let room_number: string = "";
+
+    if(!req.body || !req.body.room) {
+        console.log("did not find room param");
+        res.send({ "result": "bad" });
+        return;
+    }
+
+    room_number = req.body.room as string;
+
+    if(room_number.length !== 3) {
+        console.log("Room POST: string was not 3 chars");
+        res.send({ "result": "bad" });
+        return;
+    }
+
+    if(!StringUtils.IsAlphanumericString(room_number)) {
+        console.log("Room POST: string was not alphanumeric!");
+        res.send({ "result": "bad" });
+        return;
+    }
+
+    room_number = RoomUtils.ConvertAlphanumToRoomNumber(room_number);
+
+    if(!RoomUtils.IsValidRoomNumber(room_number)) {
+        next(new Error("Room POST: invalid room number after conversion"));
+        return;
+    }
+
+    res.send({ 
+                "result": "ok",
+                "room_to_join": room_number
+             });
+});
+
 // join room as guest
 router.get(/\/room\/[0-9][0-9][0-9]$/, (req: Request, res: Response) => {
     let roomNum: string = req.url.slice(6, 9);
@@ -32,7 +75,7 @@ router.get(/\/room\/[0-9][0-9][0-9]$/, (req: Request, res: Response) => {
 
 // custom URI for closed-alpha room creation
 router.get("/ca/create", (req: Request, res: Response) => {
-    let state: string = GenerateRandomAlphanumericString(16);
+    let state: string = StringUtils.GenerateRandomAlphanumericString(16);
     res.cookie("stateKey", state);
     let url = SpotifyService.GetUserAuthURL(state);
     res.redirect(url);
@@ -129,7 +172,7 @@ router.get("/spotify/host", (req: Request,
     }
 
     room_number = req.query.room as string;
-    if(!IsValidRoomNumber(room_number)) {
+    if(!RoomUtils.IsValidRoomNumber(room_number)) {
         next(new Error("Spotify host: invalid room number"));
     }
 
