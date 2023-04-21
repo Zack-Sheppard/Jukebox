@@ -181,7 +181,19 @@ h1, h2, hr, p {
     font-size: 14px;
 }
 
-.modal-container{
+.modal {
+    position: relative;
+    background-color: #999999;
+    border-radius: 10px;
+    width: 80vw;
+    height: 80vw;
+    max-width: 400px;
+    max-height: 400px;
+    margin: auto;
+    margin-top: 10vh;
+}
+
+.modal-container {
     position: absolute;
     top: 0;
     left: 0;
@@ -189,30 +201,39 @@ h1, h2, hr, p {
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 5000;
-  }
+}
 
-.modal{
+.modal-content {
     position: relative;
-    background-color: rgb(197, 197, 197);
-    width: 80vw;
-    height: 80vw;
-    max-width: 80vh; /*max size to prevent overflow*/
-    max-height: 80vh;
-    margin: auto;
-    margin-top: 10vh;
-  }
+    top: calc(50% - 50px);
+    transform: translateY(-50%);
+}
 
-.modal-exit{
+.modal-exit {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -14px;
+    right: 2px;
     width: 40px;
     height: 40px;
-    font-size: 25px;
-    font-weight: lighter;
-    font-style: italic;
-    color: rgb(255, 0, 13);
+    font-family: unset;
+    font-size: 34px;
+    font-weight: bold;
+    color: #333333;
     text-align: center;
 }
 
+.modal-title {
+    font-size: 24px;
+    text-align: center;
+}
 
+.modal form {
+    height: 100px;
+}
+
+.modal input {
+    font-size: 20px;
+    text-align: center;
+    height: 50px;
+    width: 114px;
+}
