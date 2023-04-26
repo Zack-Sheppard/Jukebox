@@ -8,6 +8,7 @@ import {} from "react/next";
 import Header from "./components/header";
 import Button from "./components/button";
 import Form from "./components/form";
+import Banner from "./components/banner";
 
 const url: string = window.location.href;
 const urlSearchParams = new URLSearchParams(window.location.search);
@@ -105,22 +106,41 @@ class SearchResult extends React.Component<SearchResultProps> {
 class Host extends React.Component<{},
                                    {searching: boolean,
                                     search: string,
-                                    searchResults: any[]}> {
+                                    searchResults: any[],
+                                    showBanner: boolean,
+                                    bannerMsg: string}> {
   constructor(props: any) {
     super(props);
     this.state = {
       searching: false,
       search: "",
       searchResults: [],
+      showBanner: false,
+      bannerMsg: ""
     };
     this.handleSearchRes = this.handleSearchRes.bind(this);
     this.addToQueue = this.addToQueue.bind(this);
+    this.copyInviteLink = this.copyInviteLink.bind(this);
+    this.hideBanner = this.hideBanner.bind(this);
+    this.showBanner = this.showBanner.bind(this);
+  }
+
+  showBanner(msg: string) {
+    this.setState(() => ({
+      showBanner: true,
+      bannerMsg: msg
+    }));
+  }
+
+  hideBanner() {
+    this.setState(() => ({
+      showBanner: false
+    }));
   }
 
   copyInviteLink() {
-    console.log("Copying URL to clipboard!");
     navigator.clipboard.writeText(url);
-    // maybe lil success message
+    this.showBanner("URL copied to clipboard!");
   }
 
   handleSearchRes(res: any) {
@@ -164,6 +184,7 @@ class Host extends React.Component<{},
     })
     .catch(error => {
       console.log("there was an error:", error);
+      // can parse error and display via banner
     });
   }
 
@@ -194,6 +215,11 @@ class Host extends React.Component<{},
         onClick={spotifyTrack => this.addToQueue(spotifyTrack)}
         isSearching={this.state.searching}
         results={this.state.searchResults}
+      />
+      <Banner
+        show={this.state.showBanner}
+        message={this.state.bannerMsg}
+        handleClose={this.hideBanner}
       />
     </div>
     );

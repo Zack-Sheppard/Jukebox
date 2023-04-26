@@ -6,8 +6,27 @@
     vertical-align: middle;
 }
 
-/* move to global */
 .button--host {
     background-color: #EDD86D;
     box-shadow: 0 0 16px 0 #F1C75A;
+}
+
+.banner {
+    background-color: #333333;
+    color: aliceblue;
+    opacity: 0.9;
+    border-radius: 5px;
+    position: absolute;
+    left: 10%;
+    bottom: 0;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 2;
+}
+
+.banner--hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
 }
