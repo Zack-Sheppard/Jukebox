@@ -33,14 +33,24 @@ const rooms = [];
 const path_1 = __importDefault(require("path"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: path_1.default.join(__dirname, "../../.env") });
-const CA_00 = process.env.CA_0_EMAIL || "";
-const CA_01 = process.env.CA_1_EMAIL || "";
-const CA_02 = process.env.CA_2_EMAIL || "";
-const CA_03 = process.env.CA_3_EMAIL || "";
-const CA_04 = process.env.CA_4_EMAIL || "";
-const CA_05 = process.env.CA_5_EMAIL || "";
-const CA_EMAIL = [CA_00, CA_01, CA_02, CA_03, CA_04, CA_05];
-const CA_ROOMS = ["999", "715", "210", "081", "414", "206"];
+const CA_00 = process.env.CA_00_EMAIL || "";
+const CA_01 = process.env.CA_01_EMAIL || "";
+const CA_02 = process.env.CA_02_EMAIL || "";
+const CA_03 = process.env.CA_03_EMAIL || "";
+const CA_04 = process.env.CA_04_EMAIL || "";
+const CA_05 = process.env.CA_05_EMAIL || "";
+const CA_06 = process.env.CA_06_EMAIL || "";
+const CA_07 = process.env.CA_07_EMAIL || "";
+const CA_08 = process.env.CA_08_EMAIL || "";
+const CA_09 = process.env.CA_09_EMAIL || "";
+const CA_10 = process.env.CA_10_EMAIL || "";
+const CA_11 = process.env.CA_11_EMAIL || "";
+const CA_12 = process.env.CA_12_EMAIL || "";
+const CA_13 = process.env.CA_13_EMAIL || "";
+const CA_EMAIL = [CA_00, CA_01, CA_02, CA_03, CA_04, CA_05, CA_06,
+    CA_07, CA_08, CA_09, CA_10, CA_11, CA_12, CA_13];
+const CA_ROOMS = ["999", "715", "210", "081", "414", "206", "545",
+    "041", "087", "707", "416", "302", "822", "069"];
 const closed_alpha = [];
 function init() {
     // get closed alpha users info
