@@ -3,6 +3,8 @@ import path from "path";
 import { Get, Post } from "./http-request-service";
 import { GetTokenExp, GetTokens, SetTokens } from "./room-service";
 
+import { AxiosError } from "axios";
+
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, "../../.env") });
 
@@ -266,6 +268,31 @@ async function AddToQueue(songID: string, roomNum: string) {
 
     if(resp && resp.status == 204) {
         return { "result": "success" };
+    }
+    else if(resp instanceof AxiosError) { // functionify
+        if(resp && resp.response) {
+            if(resp.response.status == 401) {
+                return { 
+                    "result": "fail",
+                    "code": 401
+                }
+            }
+            else if(resp.response.status == 403) {
+                return { 
+                    "result": "fail",
+                    "code": 403
+                }
+            }
+            else if(resp.response.status == 404) {
+                return { 
+                    "result": "fail",
+                    "code": 404
+                }
+            }
+            else {
+                return { "result": "fail" };
+            }
+        }
     }
     else {
         return { "result": "fail" };

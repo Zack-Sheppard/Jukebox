@@ -30,6 +30,7 @@ exports.AddToQueue = exports.Search = exports.GetUserInfo = exports.AuthorizeUse
 const path_1 = __importDefault(require("path"));
 const http_request_service_1 = require("./http-request-service");
 const room_service_1 = require("./room-service");
+const axios_1 = require("axios");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: path_1.default.join(__dirname, "../../.env") });
 const SPOTIFY_ID = process.env.SPOTIFY_ID || "";
@@ -235,6 +236,31 @@ async function AddToQueue(songID, roomNum) {
     let resp = await (0, http_request_service_1.Post)(API_SPOTIFY + QUEUE, null, headers, params);
     if (resp && resp.status == 204) {
         return { "result": "success" };
+    }
+    else if (resp instanceof axios_1.AxiosError) { // functionify
+        if (resp && resp.response) {
+            if (resp.response.status == 401) {
+                return {
+                    "result": "fail",
+                    "code": 401
+                };
+            }
+            else if (resp.response.status == 403) {
+                return {
+                    "result": "fail",
+                    "code": 403
+                };
+            }
+            else if (resp.response.status == 404) {
+                return {
+                    "result": "fail",
+                    "code": 404
+                };
+            }
+            else {
+                return { "result": "fail" };
+            }
+        }
     }
     else {
         return { "result": "fail" };
