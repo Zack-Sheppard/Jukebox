@@ -181,10 +181,22 @@ class Host extends React.Component<{},
     .then(data => {
       console.log("server responded with:");
       console.log(data);
+      // can parse error and display via banner
+      if(data.code == 401) {
+        console.log("401 not allowed!");
+        this.showBanner("Access denied :( Try re-creating room!");
+      }
+      else if(data.code == 403) {
+        console.log("403 not allowed!");
+        this.showBanner("Forbidden: Host may not be registered");
+      }
+      else if(data.code == 404) {
+        console.log("not found!");
+        this.showBanner("Device not found! Must be actively playing");
+      }
     })
     .catch(error => {
       console.log("there was an error:", error);
-      // can parse error and display via banner
     });
   }
 
