@@ -1,11 +1,21 @@
 
+:root {
+    /*Color Variables*/
+    --violet: #7D84B2;
+    --blackGrey: #333333;
+    --powderBlue: #B2E6F3;
+    --glowBlue: #0FF;
+    --discordBlue: #5865F2;
+    --lightGrey: #999999;
+}
+
 /* I'm not sure why but everything is short unless I set this */
 html {
     height: 100%;
 }
 
 body {
-    background-color: #7D84B2;
+    background-color: var(--violet);
     font-family: "Mandali", sans-serif;
     height: 100%;
     margin: 0;
@@ -22,7 +32,7 @@ h1, h2, hr, p {
 
 @media all and (min-width: 1280px) {
     #not-mobile {
-        color: #333333;
+        color: var(--blackGrey);
         display: block;
         font-size: 24px;
         position: fixed;
@@ -33,9 +43,9 @@ h1, h2, hr, p {
 }
 
 #header {
-    color: #B2E6F3;
+    color: var(--powderBlue);
     font-family: "Edu TAS Beginner", cursive;
-    text-shadow: 0 0 3px #B2E6F3;
+    text-shadow: 0 0 3px var(--powderBlue);
 }
 
 #header-logo {
@@ -45,16 +55,16 @@ h1, h2, hr, p {
 }
 
 #header-logo:hover {
-    text-shadow: 0 0 6px #0FF;
+    text-shadow: 0 0 6px var(--glowBlue);
 }
 
 #header a:link, a:visited {
-    color: #B2E6F3;
+    color: var(--powderBlue);
     text-decoration: none;
 }
 
 #header, #footer {
-    background-color: #333333;
+    background-color: var(--blackGrey);
     height: 42px;
     padding: 4px 8px;
     text-align: center;
@@ -87,14 +97,14 @@ h1, h2, hr, p {
     top: 5px;
     width: 40px;
     height: 40px;
-    color: #B2E6F3;
+    color: var(--powderBlue);
     font-size: 60px;
     user-select: none;
     z-index: 3;
 }
 
 .hamburger-box:hover {
-    text-shadow: 0 0 6px #0FF;
+    text-shadow: 0 0 6px var(--skyBlue);
 }
 
 #burger-top {
@@ -132,8 +142,8 @@ h1, h2, hr, p {
 */
 
 .dropdown-menu {
-    background-color: #333333;   
-    box-shadow: 0px 0px 4px 4px #333333;
+    background-color: var(--blackGrey);   
+    box-shadow: 0px 0px 4px 4px var(--blackGrey);
     color: aliceblue;
     font-family: "Mandali", sans-serif;
     font-size: 20px;
@@ -157,7 +167,7 @@ h1, h2, hr, p {
     padding: 3px 12px 6px 12px;
     margin: auto;
     margin-top: 16px;
-    background-color: #7D84B2;
+    background-color: var(--violet);
     border-radius: 10px;
 }
 
@@ -167,7 +177,7 @@ h1, h2, hr, p {
 }
 
 #discord-container {
-    background-color: #5865F2;
+    background-color: var(--discordBlue);
 }
 
 #discord-logo {
@@ -183,7 +193,7 @@ h1, h2, hr, p {
 
 .modal {
     position: relative;
-    background-color: #999999;
+    background-color: var(--lightGrey);
     border-radius: 10px;
     width: 80vw;
     height: 80vw;
@@ -218,7 +228,7 @@ h1, h2, hr, p {
     font-family: unset;
     font-size: 34px;
     font-weight: bold;
-    color: #333333;
+    color: var(--blackGrey);
     text-align: center;
 }
 
