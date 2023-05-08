@@ -8,11 +8,10 @@
     --lightGrey: #999999;
     /*font variables*/
     --JukeboxFont: "Mandali", sans-serif;
-}
-
-/* I'm not sure why but everything is short unless I set this */
-html {
-    height: 100%;
+    /*root values*/
+    height: 100vh; /*sets root div to 100vh. Everything becomes short when removed 
+                    unless desired margins are defined for every div or possibly 
+                    absolute positions used*/
 }
 
 body {
